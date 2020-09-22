@@ -1,12 +1,17 @@
 ﻿using System;
+using Controller;
+using Model;
 
 namespace Racebaanopdracht
+
 {
     class Program
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Data.Initialize("bruh");
+            Data.NextRace();
+            Console.WriteLine($"bruh bruh {Track} bruh {CurrentRace} bruh bruh");
         }
     }
 }
