@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
 namespace Model
@@ -9,13 +10,22 @@ namespace Model
         public string Name { get; set; }
         public LinkedList<Section> Sections { get; set; }
 
-        Track(string name, SectionTypes[] sections)
+        public Track(string name, SectionTypes[] sections)
         {
-
+            Name = name;
+            sections = new SectionTypes[1];
+            Sections = trackArray(sections);
         }
 
-        public Track()
+        public LinkedList<Section> trackArray(SectionTypes[] s)
         {
+            LinkedList<Section> L = new LinkedList<Section>();
+            for (int i = 0; i < s.Length; i++)
+            {
+                Section a = new Section();
+                L.AddLast(a);
+            }
+            return L;
         }
     }
 }

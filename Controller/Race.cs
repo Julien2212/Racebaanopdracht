@@ -11,30 +11,33 @@ namespace Controller
         public List<iParticipant> Participants { get; set; }
         public DateTime StartTime { get; set; }
 
-        private Random _random = new Random(DateTime.Now.Millisecond);
+        private Random _random { get; set; }
 
-        private Dictionary<Section, SectionData> _positions = new Dictionary<Section, SectionData>();
+        private Dictionary<Section, SectionData> _positions;
+        private List<Track> tracks;
 
-
-        public Section GetSectionData(Section s)
+        public SectionData GetSectionData(Section section)
         {
-            SectionData x = null;
+            SectionData value = null;
 
-            if (_positions.ContainsKey(s))
+            if (_positions.ContainsKey(section))
             {
-                x = _positions[s];
+                value = _positions[section];
             }
             else
             {
-                _positions.Add(s, x);
+                _positions.Add(section, value);
             }
-            return x;
+            return value;
         }
 
-        public Race(Track track, List<iParticipant> iParticipants)
+        public Race(Track t, List<iParticipant> participants)
         {
-            Track Track = new Track();
-            Participants = new List<iParticipant>();
+            Track = t;
+            Participants = participants;
+            StartTime = new DateTime();
+            _random = new Random(DateTime.Now.Millisecond);
+            _positions = new Dictionary<Section, SectionData>();
         }
 
         public void RandomizeEquipment()

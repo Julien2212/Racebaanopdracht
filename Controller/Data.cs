@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Net.Http.Headers;
 using System.Text;
 using Model;
 
@@ -8,7 +9,7 @@ namespace Controller
 {
     public static class Data
     {
-        static Competition competition { get; set; }
+        public static Competition competition{ get; set; }
         public static List<Track> Tracks { get; set; }
         public static List<iParticipant> Participants { get; private set; }
 
@@ -16,14 +17,14 @@ namespace Controller
 
         public static void Initialize(string Competition)
         {
-            Competition competition = new Competition();
+            competition = new Competition();
             addParticipants();
             addTracks();
         }
 
         static void addParticipants()
         {
-            Participants = new List<iParticipant>()
+            competition.Participants = new List<iParticipant>()
             {
                 new Astronaut(),
                 new Astronaut(),
@@ -33,20 +34,24 @@ namespace Controller
 
         static void addTracks()
         {
-            Tracks = new List<Track>()
-             {
-                 new Track(),
-                 new Track(),
-                 new Track()
-             };
+            competition.Tracks = new Queue<Track>();
+            competition.Tracks.Enqueue(new Track("Track1", null));
+            competition.Tracks.Enqueue(new Track("Track2", null));
         }
 
-        public static void NextRace()
+        public static Track NextRace()
         {
-            if (Competition.NextTrack() != "null")
+            var volgende = competition.NextTrack();
+            // als NextTrack() niet null returnt:
+            if (volgende != null)
             {
-                CurrentRace = t;
+                CurrentRace = new Race(volgende, Participants); // CurrentRace initialiseren
             }
+            else
+            {
+                return null;
+            }
+            return null;
         }
     }
 

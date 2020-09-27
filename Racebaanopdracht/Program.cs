@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using Controller;
 using Model;
 
@@ -9,9 +10,15 @@ namespace Racebaanopdracht
     {
         static void Main(string[] args)
         {
-            Data.Initialize("bruh");
+            Data.Initialize("Test");
             Data.NextRace();
-            Console.WriteLine($"bruh bruh {Track} bruh {CurrentRace} bruh bruh");
+            Console.WriteLine($"CurrentRace: {Data.CurrentRace.Track.Name} ");
+            //Visualisatie.DrawTrack(Data.NextRace());
+
+            for (; ; )
+            {
+                Thread.Sleep(100);
+            }
         }
     }
 }

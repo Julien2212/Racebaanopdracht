@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Model
@@ -10,17 +11,24 @@ namespace Model
         public List<iParticipant> Participants { get; set; }
         public Queue<Track> Tracks { get; set; }
 
+        public Competition()
+        {
+            Tracks = new Queue<Track>();
+        }
+
         public Track NextTrack()
         {
-            if (Tracks.Count == 0)
+            Track volgende = null;
+            int Tel = Tracks.Count;
+            if (Tel == 0)
             {
-                return null;
+                return volgende;
             }
             else
             {
-                return Tracks.Dequeue();
+                volgende = Tracks.Dequeue();
+                return volgende;
             }
         }
-
     }
 }

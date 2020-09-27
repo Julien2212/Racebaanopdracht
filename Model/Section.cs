@@ -8,10 +8,6 @@ namespace Model
     {
         public SectionTypes SectionType { get; set; }
 
-        public static implicit operator Section(SectionData v)
-        {
-            throw new NotImplementedException();
-        }
     }
     public enum SectionTypes
     {
