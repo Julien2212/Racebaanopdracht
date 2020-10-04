@@ -24,7 +24,21 @@ namespace Racebaanopdracht
 
         public static void DrawTrack(Track t)
         {
-
+            t = new Track("bruh", null);
+            if (t.Sections == null)
+            {
+                foreach (string s in _curveLeftUnder)
+                {
+                    Console.WriteLine(s);
+                }
+            }
+            else
+            {
+                foreach (string s in _finishHorizontal)
+                {
+                    Console.WriteLine(s);
+                }
+            }
         }
     }
 }

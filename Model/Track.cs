@@ -13,7 +13,7 @@ namespace Model
         public Track(string name, SectionTypes[] sections)
         {
             Name = name;
-            sections = new SectionTypes[1];
+            Sections = new LinkedList<Section>();
             Sections = trackArray(sections);
         }
 

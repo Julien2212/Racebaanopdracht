@@ -13,7 +13,7 @@ namespace Racebaanopdracht
             Data.Initialize("Test");
             Data.NextRace();
             Console.WriteLine($"CurrentRace: {Data.CurrentRace.Track.Name} ");
-            //Visualisatie.DrawTrack(Data.NextRace());
+            Visualisatie.DrawTrack(Data.NextRace());
 
             for (; ; )
             {
