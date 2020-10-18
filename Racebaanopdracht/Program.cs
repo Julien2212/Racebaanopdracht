@@ -10,10 +10,13 @@ namespace Racebaanopdracht
     {
         static void Main(string[] args)
         {
-            Data.Initialize("Test");
+            SectionTypes[] s = new SectionTypes[] { SectionTypes.StartGrid, SectionTypes.RightCorner, SectionTypes.RightCorner, SectionTypes.Straight, SectionTypes.Straight, SectionTypes.RightCorner, SectionTypes.RightCorner, SectionTypes.Finish };
+            Track test = new Track("testTrack", s);
+            Data.Initialize();
             Data.NextRace();
             Console.WriteLine($"CurrentRace: {Data.CurrentRace.Track.Name} ");
-            Visualisatie.DrawTrack(Data.NextRace());
+            Visualisatie.DrawTrack(test);
+            
 
             for (; ; )
             {

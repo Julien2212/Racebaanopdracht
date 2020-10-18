@@ -15,7 +15,7 @@ namespace Controller
 
         public static Race CurrentRace { get; set; }
 
-        public static void Initialize(string Competition)
+        public static void Initialize()
         {
             competition = new Competition();
             addParticipants();
@@ -34,9 +34,10 @@ namespace Controller
 
         static void addTracks()
         {
+            SectionTypes[] s = new SectionTypes[] { SectionTypes.StartGrid, SectionTypes.Finish, SectionTypes.RightCorner, SectionTypes.RightCorner, SectionTypes.Straight, SectionTypes.Straight, SectionTypes.RightCorner, SectionTypes.RightCorner, SectionTypes.Finish };
             competition.Tracks = new Queue<Track>();
-            competition.Tracks.Enqueue(new Track("Track1", null));
-            competition.Tracks.Enqueue(new Track("Track2", null));
+            competition.Tracks.Enqueue(new Track("Track1", s));
+            competition.Tracks.Enqueue(new Track("Track2", s));
         }
 
         public static Track NextRace()

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using Model;
 
@@ -24,20 +25,50 @@ namespace Racebaanopdracht
 
         public static void DrawTrack(Track t)
         {
-            t = new Track("bruh", null);
-            if (t.Sections == null)
+            //int i = 0;
+            foreach (Section s in t.Sections)
             {
-                foreach (string s in _curveLeftUnder)
+                if (s.SectionType == SectionTypes.Finish)
                 {
-                    Console.WriteLine(s);
+                    foreach (string a in _finishHorizontal)
+                    {
+                        Console.WriteLine(a);
+                    }
                 }
-            }
-            else
-            {
-                foreach (string s in _finishHorizontal)
+
+                if (s.SectionType == SectionTypes.Straight)
                 {
-                    Console.WriteLine(s);
+                    foreach (string a in _trackHorizontal)
+                    {
+                        Console.WriteLine(a);
+                    }
                 }
+
+                if (s.SectionType == SectionTypes.LeftCorner)
+                {
+                    foreach (string a in _curveLeftUnder)
+                    {
+                        Console.WriteLine(a);
+                    }
+                }
+
+                if (s.SectionType == SectionTypes.RightCorner)
+                {
+                    foreach (string a in _curveRightUnder)
+                    {
+                        Console.WriteLine(a);
+                    }
+                }
+
+                if (s.SectionType == SectionTypes.StartGrid)
+                {
+                    foreach (string a in _finishHorizontal)
+                    {
+                        Console.WriteLine(a);
+                    }
+                }
+                /*Console.WriteLine($"hallo + {i}");
+                i++;*/
             }
         }
     }
