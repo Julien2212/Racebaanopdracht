@@ -21,6 +21,7 @@ namespace ControllerTest
         [Test]
         public void NextTrack_EmptyQueue_ReturnNull()
         {
+
             var result = _competition.NextTrack();
             Assert.IsNull(result);
         }

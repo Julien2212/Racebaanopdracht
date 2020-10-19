@@ -13,7 +13,7 @@ namespace Model
         public Track(string name, SectionTypes[] sections)
         {
             Name = name;
-            sections = new SectionTypes[1];
+            Sections = new LinkedList<Section>();
             Sections = trackArray(sections);
         }
 
@@ -22,7 +22,7 @@ namespace Model
             LinkedList<Section> L = new LinkedList<Section>();
             for (int i = 0; i < s.Length; i++)
             {
-                Section a = new Section();
+                Section a = new Section() { SectionType = s[i] };
                 L.AddLast(a);
             }
             return L;
