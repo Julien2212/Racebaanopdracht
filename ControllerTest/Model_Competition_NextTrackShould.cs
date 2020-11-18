@@ -25,10 +25,11 @@ namespace ControllerTest
             var result = _competition.NextTrack();
             Assert.IsNull(result);
         }
+
         [Test]
         public void NextTrack_OneInQueue_ReturnTrack()
         {
-            Track TestTrack = new Track("testtrack", null);
+            Track TestTrack = new Track("testtrack", new SectionTypes[]{SectionTypes.StartGrid, SectionTypes.Straight, SectionTypes.Finish});
             _competition.Tracks.Enqueue(TestTrack);
             var result = _competition.NextTrack();
             Assert.AreEqual(result, TestTrack);
@@ -37,7 +38,7 @@ namespace ControllerTest
         [Test]
         public void NextTrack_OneInQueue_RemoveTrackFromQueue()
         {
-            Track TestTrack2 = new Track("testtrack2", null);
+            Track TestTrack2 = new Track("testtrack2", new SectionTypes[] { SectionTypes.StartGrid, SectionTypes.Straight, SectionTypes.Finish });
             _competition.Tracks.Enqueue(TestTrack2);
             var result = _competition.NextTrack();
             result = _competition.NextTrack();
@@ -47,8 +48,8 @@ namespace ControllerTest
         [Test]
         public void NextTrack_TwoInQueue_ReturnNextTrack()
         {
-            Track TestTrack3 = new Track("testtrack3", null);
-            Track TestTrack4 = new Track("testtrack4", null);
+            Track TestTrack3 = new Track("testtrack3", new SectionTypes[] { SectionTypes.StartGrid, SectionTypes.Straight, SectionTypes.Finish });
+            Track TestTrack4 = new Track("testtrack4", new SectionTypes[] { SectionTypes.StartGrid, SectionTypes.Straight, SectionTypes.Finish });
             _competition.Tracks.Enqueue(TestTrack3);
             _competition.Tracks.Enqueue(TestTrack4);
             var result1 = _competition.NextTrack();

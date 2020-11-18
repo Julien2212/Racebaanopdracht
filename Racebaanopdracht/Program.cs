@@ -10,7 +10,7 @@ namespace Racebaanopdracht
     {
         static void Main(string[] args)
         {
-            SectionTypes[] s = new SectionTypes[] { SectionTypes.StartGrid, SectionTypes.Straight,  SectionTypes.Straight, SectionTypes.Straight, SectionTypes.RightCorner, SectionTypes.Straight, SectionTypes.Finish };
+            SectionTypes[] s = new SectionTypes[] { SectionTypes.StartGrid, SectionTypes.Straight,  SectionTypes.Straight, SectionTypes.Straight, SectionTypes.RightCorner, SectionTypes.Straight, SectionTypes.RightCorner, SectionTypes.LeftCorner, SectionTypes.Straight, SectionTypes.LeftCorner, SectionTypes.Finish };
             SectionTypes[] elburg = new SectionTypes[]
             {
                 SectionTypes.StartGrid, SectionTypes.Finish, SectionTypes.RightCorner, SectionTypes.Straight,
