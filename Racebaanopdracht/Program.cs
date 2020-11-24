@@ -6,7 +6,7 @@ using Model;
 namespace Racebaanopdracht
 
 {
-    class Program
+    public class Program
     {
         static void Main(string[] args)
         {
@@ -21,10 +21,11 @@ namespace Racebaanopdracht
                 SectionTypes.Straight, SectionTypes.Straight, SectionTypes.Straight, SectionTypes.RightCorner,
                 SectionTypes.StartGrid, SectionTypes.StartGrid
             };
-            Track Test = new Track("test", s);
+            Track Test = new Track("print", elburg);
             Data.Initialize();
             Data.NextRace();
             Console.WriteLine($"CurrentRace: {Data.CurrentRace.Track.Name} ");
+            //Visualisatie.watDoetDitVraagteken("wat", new Astronaut());
             Visualisatie.DrawTrack(Test);
 
             for (; ; )

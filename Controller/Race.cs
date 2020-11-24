@@ -10,7 +10,6 @@ namespace Controller
         public Track Track { get; set; }
         public List<iParticipant> Participants { get; set; }
         public DateTime StartTime { get; set; }
-
         private Random _random { get; set; }
 
         private Dictionary<Section, SectionData> _positions;
@@ -38,6 +37,7 @@ namespace Controller
             StartTime = new DateTime();
             _random = new Random(DateTime.Now.Millisecond);
             _positions = new Dictionary<Section, SectionData>();
+            //SetStartPosition(Track, Participants);
         }
 
         public void RandomizeEquipment()
@@ -47,6 +47,19 @@ namespace Controller
                 int random = _random.Next();
                 equipment.Quality = random;
                 equipment.Performance = random;
+            }
+        }
+
+        public void SetStartPosition(Track t, List<iParticipant> p)
+        { // Deelnemers op startgrid zetten
+            Track = t;
+            Participants = p;
+            foreach (Section s in Track.Sections)
+            {
+                if (s.SectionType == SectionTypes.StartGrid)
+                {
+                    _positions.Add(s, new SectionData());
+                }
             }
         }
     }
