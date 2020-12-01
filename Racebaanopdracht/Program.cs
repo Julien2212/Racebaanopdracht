@@ -10,7 +10,7 @@ namespace Racebaanopdracht
     {
         static void Main(string[] args)
         {
-            SectionTypes[] s = new SectionTypes[] { SectionTypes.StartGrid, SectionTypes.Straight,  SectionTypes.Straight, SectionTypes.Straight, SectionTypes.RightCorner, SectionTypes.Straight, SectionTypes.RightCorner, SectionTypes.LeftCorner, SectionTypes.Straight, SectionTypes.LeftCorner, SectionTypes.Finish };
+           /* SectionTypes[] s = new SectionTypes[] { SectionTypes.StartGrid, SectionTypes.Straight,  SectionTypes.Straight, SectionTypes.Straight, SectionTypes.RightCorner, SectionTypes.Straight, SectionTypes.RightCorner, SectionTypes.LeftCorner, SectionTypes.Straight, SectionTypes.LeftCorner, SectionTypes.Finish };
             SectionTypes[] elburg = new SectionTypes[]
             {
                 SectionTypes.StartGrid, SectionTypes.Finish, SectionTypes.RightCorner, SectionTypes.Straight,
@@ -21,12 +21,12 @@ namespace Racebaanopdracht
                 SectionTypes.Straight, SectionTypes.Straight, SectionTypes.Straight, SectionTypes.RightCorner,
                 SectionTypes.StartGrid, SectionTypes.StartGrid
             };
-            Track Test = new Track("print", elburg);
+            Track Test = new Track("print", elburg);*/
             Data.Initialize();
             Data.NextRace();
             Console.WriteLine($"CurrentRace: {Data.CurrentRace.Track.Name} ");
-            //Visualisatie.watDoetDitVraagteken("wat", new Astronaut());
-            Visualisatie.DrawTrack(Test);
+            Visualisatie.PlaatsenDeelnemers("wat", new Astronaut("wat"));
+            Visualisatie.DrawTrack(Data.CurrentRace.Track);
 
             for (; ; )
             {

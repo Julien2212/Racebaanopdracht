@@ -29,9 +29,9 @@ namespace Racebaanopdracht
 
         }
 
-        public static string watDoetDitVraagteken(string s, iParticipant p)
+        public static string PlaatsenDeelnemers(string s, iParticipant p)
         {
-            s.Replace(s, $"test{p}");
+            s.Replace(s, $"|{p.Name}|");
             return s;
         }
         public static void print(string[] a, int x, int y)
@@ -46,8 +46,8 @@ namespace Racebaanopdracht
         }
         public static void DrawTrack(Track t)
         {
-            int testX = 40;
-            int testY = 40;
+            int testX = 25;
+            int testY = 5;
             string richting = "East";
            
             foreach (Section s in t.Sections)

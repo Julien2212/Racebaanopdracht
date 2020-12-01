@@ -24,23 +24,33 @@ namespace Controller
 
         static void addParticipants()
         {
-            competition.Participants = new List<iParticipant>()
+            Participants = new List<iParticipant>()
             {
-                new Astronaut(),
-                new Astronaut(),
-                new Astronaut()
+                new Astronaut("naam"),
+                new Astronaut("naam"),
+                new Astronaut("naam")
             };
+            competition.Participants = Participants;
         }
 
         static void addTracks()
         {
-            SectionTypes[] s = new SectionTypes[] { SectionTypes.StartGrid, SectionTypes.Finish, SectionTypes.RightCorner, SectionTypes.RightCorner, SectionTypes.Straight, SectionTypes.Straight, SectionTypes.RightCorner, SectionTypes.RightCorner, SectionTypes.Finish };
+            SectionTypes[] elburg = new SectionTypes[]
+            {
+                SectionTypes.StartGrid, SectionTypes.Finish, SectionTypes.RightCorner, SectionTypes.Straight,
+                SectionTypes.LeftCorner, SectionTypes.Straight, SectionTypes.Straight, SectionTypes.RightCorner,
+                SectionTypes.RightCorner, SectionTypes.Straight, SectionTypes.Straight, SectionTypes.LeftCorner,
+                SectionTypes.RightCorner, SectionTypes.Straight, SectionTypes.LeftCorner, SectionTypes.RightCorner,
+                SectionTypes.RightCorner, SectionTypes.LeftCorner, SectionTypes.Straight, SectionTypes.RightCorner,
+                SectionTypes.Straight, SectionTypes.Straight, SectionTypes.Straight, SectionTypes.RightCorner,
+                SectionTypes.StartGrid, SectionTypes.StartGrid
+            };
             competition.Tracks = new Queue<Track>();
-            competition.Tracks.Enqueue(new Track("Track1", s));
-            competition.Tracks.Enqueue(new Track("Track2", s));
+            competition.Tracks.Enqueue(new Track("Track1", elburg));
+            competition.Tracks.Enqueue(new Track("Track2", elburg));
         }
 
-        public static Track NextRace()
+        public static void NextRace()
         {
             var volgende = competition.NextTrack();
             // als NextTrack() niet null returnt:
@@ -48,11 +58,6 @@ namespace Controller
             {
                 CurrentRace = new Race(volgende, Participants); // CurrentRace initialiseren
             }
-            else
-            {
-                return null;
-            }
-            return null;
         }
     }
 

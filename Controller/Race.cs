@@ -25,9 +25,9 @@ namespace Controller
             }
             else
             {
-                _positions.Add(section, value);
+                _positions.Add(section, new SectionData(null, null)); 
             }
-            return value;
+            return _positions[section];
         }
 
         public Race(Track t, List<iParticipant> participants)
@@ -37,7 +37,7 @@ namespace Controller
             StartTime = new DateTime();
             _random = new Random(DateTime.Now.Millisecond);
             _positions = new Dictionary<Section, SectionData>();
-            //SetStartPosition(Track, Participants);
+           SetStartPosition(Track, Participants);
         }
 
         public void RandomizeEquipment()
@@ -54,13 +54,38 @@ namespace Controller
         { // Deelnemers op startgrid zetten
             Track = t;
             Participants = p;
-            foreach (Section s in Track.Sections)
+            Queue<Section> starts = new Queue<Section>();
+            foreach (Section s in t.Sections)
             {
                 if (s.SectionType == SectionTypes.StartGrid)
-                {
-                    _positions.Add(s, new SectionData());
+                { // Als SectionType een start is, enqueue deze
+                    starts.Enqueue(s);
+                }
+
+                if (s.SectionType == SectionTypes.Finish)
+                {// Als SectionType een finish is, stop. Anders gaat hij lang door blijven gaan
+                    break; 
                 }
             }
+            int tel = 0; // Teller
+            if ((p.Count % 2) == 0)
+            {
+                while (tel < p.Count) // Terwijl teller kleiner is dan participants.Count
+                { // Voeg deze toe aan _positions
+                    _positions.Add(starts.Dequeue(), new SectionData(p[tel], p[tel+1])); // Weet niet of dit goed is. GetSectionData(starts.Dequeue())
+                    tel+=2;
+                }
+            }
+            else
+            {
+                while (tel < p.Count-1) // Terwijl teller kleiner is dan participants.Count
+                { // Voeg deze toe aan _positions
+                    _positions.Add(starts.Dequeue(), new SectionData(p[tel], p[tel + 1])); // Weet niet of dit goed is. GetSectionData(starts.Dequeue())
+                    tel+=2;
+                }
+                //_positions.Add(starts.Dequeue(), new SectionData(p[tel]));
+            }
+           
         }
     }
 }

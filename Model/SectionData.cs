@@ -12,5 +12,11 @@ namespace Model
         public int Points { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public iEquipment Equipment { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public iParticipant.TeamColors TeamColor { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+        public SectionData(iParticipant left, iParticipant right )
+        {
+            Left = left;
+            Right = right;
+        }
     }
 }
