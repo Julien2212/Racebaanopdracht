@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
 using Model;
 
@@ -9,6 +10,9 @@ namespace Racebaanopdracht
     public static class Visualisatie
     {
         #region graphics
+
+        private static string[] _startGridHorizontal = { "----", "  # ", "  # ", "----" };
+        private static string[] _startGridVertical = { "|  |", "|##|", "|  |", "|  |" };
         private static string[] _finishHorizontal = { "----", "  # ", "  # ", "----" };
         private static string[] _finishVertical = { "|  |", "|##|", "|  |", "|  |" };
         private static string[] _trackHorizontal = { "----", "    ", "    ", "----" };
@@ -26,14 +30,28 @@ namespace Racebaanopdracht
         #endregion
         public static void Initialize()
         {
-
+            PlaatsenDeelnemers(_startGridHorizontal[1], new Astronaut("1"), new Astronaut("2"));
         }
 
-        public static string PlaatsenDeelnemers(string s, iParticipant p)
+        public static string PlaatsenDeelnemers(string s, iParticipant p1, iParticipant p2)
         {
-            s.Replace(s, $"|{p.Name}|");
+            char eersteletterp1 = p1.Name.First();
+            char eersteletterp2 = p2.Name.First();
+            while (!s.Contains(eersteletterp1) || !s.Contains(eersteletterp2))
+            {
+                if (s == _startGridHorizontal[1])
+                {
+                   s.Replace('#', eersteletterp1);
+                }
+                else if (s == _startGridHorizontal[2])
+                {
+                    s.Replace('#', eersteletterp2);
+                }
+                return s;
+            }
             return s;
         }
+
         public static void print(string[] a, int x, int y)
         {
             foreach (string b in a)
@@ -49,17 +67,17 @@ namespace Racebaanopdracht
             int testX = 25;
             int testY = 5;
             string richting = "East";
-           
+
             foreach (Section s in t.Sections)
             {
-                
+
                 //Console.SetCursorPosition(testX, testY);
                 if (s.SectionType == SectionTypes.Straight)
                 {
                     if (richting == "East")
                     {
                         //Console.SetCursorPosition(CursorY += 5, CursorX);
-                        
+
                         print(_trackHorizontal, testX, testY);
                         testX += 5;
                     }
@@ -68,7 +86,7 @@ namespace Racebaanopdracht
                     if (richting == "West")
                     {
                         //Console.SetCursorPosition(CursorY-=5, CursorX);
-                        
+
                         print(_trackHorizontal, testX, testY);
                         testX -= 5;
                     }
@@ -76,14 +94,14 @@ namespace Racebaanopdracht
                     if (richting == "South")
                     {
                         //Console.SetCursorPosition(CursorY, CursorX+=5);
-                        
+
                         print(_trackVertical, testX, testY);
                         testY += 5;
                     }
                     if (richting == "North")
                     {
                         //Console.SetCursorPosition(CursorY, CursorX-=5);
-                        
+
                         print(_trackVertical, testX, testY);
                         testY -= 5;
                     }
@@ -108,7 +126,7 @@ namespace Racebaanopdracht
 
                     else if (richting == "West")
                     {
-                        
+
                         print(_westLeft, testX, testY);
                         richting = "South";
                         testY += 5;
@@ -132,7 +150,7 @@ namespace Racebaanopdracht
                         testY += 5;
                     }
 
-                   else if (richting == "South")
+                    else if (richting == "South")
                     {
                         print(_southRight, testX, testY);
                         richting = "West";
@@ -173,7 +191,7 @@ namespace Racebaanopdracht
                 {
                     if (richting == "East" || richting == "West")
                     {
-                        print(_finishHorizontal, testX, testY);
+                        print(_startGridHorizontal, testX, testY);
                         //testX += 5;
                     }
                 }

@@ -26,9 +26,9 @@ namespace Controller
         {
             Participants = new List<iParticipant>()
             {
-                new Astronaut("naam"),
-                new Astronaut("naam"),
-                new Astronaut("naam")
+                new Astronaut("naam1"),
+                new Astronaut("naam2"),
+                new Astronaut("naam3")
             };
             competition.Participants = Participants;
         }
