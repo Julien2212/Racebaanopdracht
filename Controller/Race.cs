@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Timers;
 
 namespace Controller
 {
@@ -15,6 +16,15 @@ namespace Controller
         private Dictionary<Section, SectionData> _positions;
         private List<Track> tracks;
 
+        private Timer timer = new Timer(500);
+        public event EventHandler<DriversChangedEventArgs> DriversChanged;
+
+        public void OnTimedEvent(object sender, EventArgs e)
+        {
+            Console.Clear();
+            DriversChanged?.Invoke(this, new DriversChangedEventArgs() {track = Track });
+            // Bewegen
+        }
         public SectionData GetSectionData(Section section)
         {
             SectionData value = null;
@@ -25,7 +35,7 @@ namespace Controller
             }
             else
             {
-                _positions.Add(section, new SectionData(null, null)); 
+                _positions.Add(section, new SectionData(null, null));
             }
             return _positions[section];
         }
@@ -37,7 +47,16 @@ namespace Controller
             StartTime = new DateTime();
             _random = new Random(DateTime.Now.Millisecond);
             _positions = new Dictionary<Section, SectionData>();
-           SetStartPosition(Track, Participants);
+            SetStartPosition(Track, Participants);
+            //timer = new Timer(500);
+            Start();
+            timer.Elapsed += OnTimedEvent;
+            
+        }
+
+        public void Start()
+        {
+            timer.Start();
         }
 
         public void RandomizeEquipment()

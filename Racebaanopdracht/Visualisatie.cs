@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using Model;
 
 namespace Racebaanopdracht
 {
     public static class Visualisatie
     {
+        static int Counter;
         #region graphics
 
         private static string[] _startGridHorizontal = { "----", "  # ", "  # ", "----" };
@@ -28,28 +30,35 @@ namespace Racebaanopdracht
         private static string[] _westLeft = { " ---", "/   ", "|   ", "|  |" };
         private static string[] _northLeft = { @"--\ ", @"   \", @"\  |", "|  |" };
         #endregion
+        
         public static void Initialize()
         {
-            PlaatsenDeelnemers(_startGridHorizontal[1], new Astronaut("1"), new Astronaut("2"));
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.BackgroundColor = ConsoleColor.Black;
         }
 
-        public static string PlaatsenDeelnemers(string s, iParticipant p1, iParticipant p2)
+        public static void OnDriversChanged(object sender, DriversChangedEventArgs e)
         {
-            char eersteletterp1 = p1.Name.First();
-            char eersteletterp2 = p2.Name.First();
-            while (!s.Contains(eersteletterp1) || !s.Contains(eersteletterp2))
+            DrawTrack(e.track); 
+            Counter = 0;
+        }
+
+        public static string PlaceParticipants(string s, List<iParticipant> participants)
+        {
+            var regex = new Regex(Regex.Escape("#"));
+
+            string result = s;
+
+            if (result.Contains('#'))
             {
-                if (s == _startGridHorizontal[1])
+                if (Counter < participants.Count)
                 {
-                   s.Replace('#', eersteletterp1);
+                    result = regex.Replace(result, participants[Counter].Name.First().ToString(), 1);
+                    Counter++;
+                    //break;
                 }
-                else if (s == _startGridHorizontal[2])
-                {
-                    s.Replace('#', eersteletterp2);
-                }
-                return s;
             }
-            return s;
+            return result;
         }
 
         public static void print(string[] a, int x, int y)
@@ -57,7 +66,7 @@ namespace Racebaanopdracht
             foreach (string b in a)
             {
                 Console.SetCursorPosition(x, y);
-                Console.Write(b);
+                Console.Write(PlaceParticipants(b, Controller.Data.CurrentRace.Participants));
                 y++;
             }
 
@@ -70,14 +79,10 @@ namespace Racebaanopdracht
 
             foreach (Section s in t.Sections)
             {
-
-                //Console.SetCursorPosition(testX, testY);
                 if (s.SectionType == SectionTypes.Straight)
                 {
                     if (richting == "East")
                     {
-                        //Console.SetCursorPosition(CursorY += 5, CursorX);
-
                         print(_trackHorizontal, testX, testY);
                         testX += 5;
                     }
@@ -85,29 +90,21 @@ namespace Racebaanopdracht
 
                     if (richting == "West")
                     {
-                        //Console.SetCursorPosition(CursorY-=5, CursorX);
-
                         print(_trackHorizontal, testX, testY);
                         testX -= 5;
                     }
 
                     if (richting == "South")
                     {
-                        //Console.SetCursorPosition(CursorY, CursorX+=5);
-
                         print(_trackVertical, testX, testY);
                         testY += 5;
                     }
                     if (richting == "North")
                     {
-                        //Console.SetCursorPosition(CursorY, CursorX-=5);
-
                         print(_trackVertical, testX, testY);
                         testY -= 5;
                     }
                 }
-
-                //Console.SetCursorPosition(testX, testY);
                 if (s.SectionType == SectionTypes.LeftCorner)
                 {
                     if (richting == "East")
@@ -140,7 +137,6 @@ namespace Racebaanopdracht
                     }
                 }
 
-                //Console.SetCursorPosition(testX, testY);
                 if (s.SectionType == SectionTypes.RightCorner)
                 {
                     if (richting == "East")
@@ -171,37 +167,10 @@ namespace Racebaanopdracht
                         testX += 5;
                     }
                 }
-
-                //Console.SetCursorPosition(testX, testY);
-                if (s.SectionType == SectionTypes.Finish)
-                {
-                    if (richting == "East" || richting == "West")
-                    {
-                        print(_finishHorizontal, testX, testY);
-                        //testX += 5;
-                    }
-                    else
-                    {
-                        print(_finishVertical, testX, testY);
-                        //testY += 5;
-                    }
-                }
-                //Console.SetCursorPosition(testX, testY);
-                if (s.SectionType == SectionTypes.StartGrid) // Als de section type gelijk is aan StartGrid
-                {
-                    if (richting == "East" || richting == "West")
-                    {
-                        print(_startGridHorizontal, testX, testY);
-                        //testX += 5;
-                    }
-                }
-
                 if (s.SectionType == SectionTypes.StartGrid || s.SectionType == SectionTypes.Finish)
                 {
                     if (richting == "East")
                     {
-                        //Console.SetCursorPosition(CursorY += 5, CursorX);
-
                         print(_finishHorizontal, testX, testY);
                         testX += 5;
                     }
@@ -209,23 +178,17 @@ namespace Racebaanopdracht
 
                     if (richting == "West")
                     {
-                        //Console.SetCursorPosition(CursorY-=5, CursorX);
-
                         print(_finishHorizontal, testX, testY);
                         testX -= 5;
                     }
 
                     if (richting == "South")
                     {
-                        //Console.SetCursorPosition(CursorY, CursorX+=5);
-
                         print(_finishVertical, testX, testY);
                         testY += 5;
                     }
                     if (richting == "North")
                     {
-                        //Console.SetCursorPosition(CursorY, CursorX-=5);
-
                         print(_finishVertical, testX, testY);
                         testY -= 5;
                     }

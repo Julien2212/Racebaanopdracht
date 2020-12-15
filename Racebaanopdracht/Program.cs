@@ -28,7 +28,8 @@ namespace Racebaanopdracht
             Console.WriteLine($"CurrentRace: {Data.CurrentRace.Track.Name} ");
             //Visualisatie.PlaatsenDeelnemers("  # ", new Astronaut("test"), new Astronaut("test2"));
             Visualisatie.Initialize();
-            Visualisatie.DrawTrack(Data.CurrentRace.Track);
+            //Visualisatie.DrawTrack(Data.CurrentRace.Track);
+            Data.CurrentRace.DriversChanged += Visualisatie.OnDriversChanged;  
 
             for (; ; )
             {
