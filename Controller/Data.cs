@@ -26,16 +26,18 @@ namespace Controller
         {
             Participants = new List<iParticipant>()
             {
-                new Astronaut("Gerard"),
-                new Astronaut("Kerym"),
-                new Astronaut("Coolio")
+                new Astronaut("Yuri Gagarin"),
+                new Astronaut("Neil Armstrong"),
+                new Astronaut("Andre Kuipers"),
+                new Astronaut("Julian van Rijckevorsel")
+
             };
             competition.Participants = Participants;
         }
 
         static void addTracks()
         {
-            SectionTypes[] elburg = new SectionTypes[]
+            SectionTypes[] zeewolde = new SectionTypes[]
             {
                 SectionTypes.StartGrid, SectionTypes.Finish, SectionTypes.RightCorner, SectionTypes.Straight,
                 SectionTypes.LeftCorner, SectionTypes.Straight, SectionTypes.Straight, SectionTypes.RightCorner,
@@ -43,11 +45,12 @@ namespace Controller
                 SectionTypes.RightCorner, SectionTypes.Straight, SectionTypes.LeftCorner, SectionTypes.RightCorner,
                 SectionTypes.RightCorner, SectionTypes.LeftCorner, SectionTypes.Straight, SectionTypes.RightCorner,
                 SectionTypes.Straight, SectionTypes.Straight, SectionTypes.Straight, SectionTypes.RightCorner,
-                SectionTypes.StartGrid, SectionTypes.StartGrid
+                SectionTypes.StartGrid, SectionTypes.StartGrid,
+
             };
             competition.Tracks = new Queue<Track>();
-            competition.Tracks.Enqueue(new Track("Track1", elburg));
-            competition.Tracks.Enqueue(new Track("Track2", elburg));
+            competition.Tracks.Enqueue(new Track("Track1", zeewolde));
+            competition.Tracks.Enqueue(new Track("Track2", zeewolde));
         }
 
         public static void NextRace()
