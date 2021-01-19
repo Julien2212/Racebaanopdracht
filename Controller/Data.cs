@@ -26,10 +26,10 @@ namespace Controller
         {
             Participants = new List<iParticipant>()
             {
-                new Astronaut("Yuri Gagarin"),
-                new Astronaut("Neil Armstrong"),
-                new Astronaut("Andre Kuipers"),
-                new Astronaut("Julian van Rijckevorsel")
+                new Astronaut("Yuri Gagarin", new Raket()),
+                new Astronaut("Neil Armstrong", new Raket()),
+                new Astronaut("Andre Kuipers", new Raket()),
+                new Astronaut("Julian van Rijckevorsel", new Raket())
 
             };
             competition.Participants = Participants;
@@ -39,13 +39,12 @@ namespace Controller
         {
             SectionTypes[] zeewolde = new SectionTypes[]
             {
-                SectionTypes.StartGrid, SectionTypes.Finish, SectionTypes.RightCorner, SectionTypes.Straight,
+                SectionTypes.StartGrid, SectionTypes.StartGrid,SectionTypes.StartGrid, SectionTypes.Finish, SectionTypes.RightCorner, SectionTypes.Straight,
                 SectionTypes.LeftCorner, SectionTypes.Straight, SectionTypes.Straight, SectionTypes.RightCorner,
                 SectionTypes.RightCorner, SectionTypes.Straight, SectionTypes.Straight, SectionTypes.LeftCorner,
                 SectionTypes.RightCorner, SectionTypes.Straight, SectionTypes.LeftCorner, SectionTypes.RightCorner,
                 SectionTypes.RightCorner, SectionTypes.LeftCorner, SectionTypes.Straight, SectionTypes.RightCorner,
                 SectionTypes.Straight, SectionTypes.Straight, SectionTypes.Straight, SectionTypes.RightCorner,
-                SectionTypes.StartGrid, SectionTypes.StartGrid,
 
             };
             competition.Tracks = new Queue<Track>();

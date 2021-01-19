@@ -14,7 +14,6 @@ namespace Racebaanopdracht
             Data.NextRace();
             Console.WriteLine($"CurrentRace: {Data.CurrentRace.Track.Name} ");
             Visualisatie.Initialize();
-            
             Data.CurrentRace.DriversChanged += Visualisatie.OnDriversChanged;  
 
             for (; ; )

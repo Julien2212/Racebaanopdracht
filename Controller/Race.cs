@@ -17,10 +17,10 @@ namespace Controller
         private Dictionary<Section, SectionData> _positions;
         private List<Track> tracks;
 
-        private Timer timer = new Timer(1000);
+        private Timer timer = new Timer(500); // 0,5 sec
         public event EventHandler<DriversChangedEventArgs> DriversChanged;
         public static int x = 0;
-        //public static int SectionNext = 0;
+        private Dictionary<iParticipant, int> _rounds;
 
         public Race(Track t, List<iParticipant> participants)
         {
@@ -29,91 +29,121 @@ namespace Controller
             StartTime = new DateTime();
             _random = new Random(DateTime.Now.Millisecond);
             _positions = new Dictionary<Section, SectionData>(); // Sectie als key met informatie als value
+            _rounds = new Dictionary<iParticipant, int>();
             SetStartPosition(Track, Participants);
             Start();
             timer.Elapsed += OnTimedEvent;
         }
         public void OnTimedEvent(object sender, EventArgs e)
         {
+
+            DriversChanged?.Invoke(this, new DriversChangedEventArgs() { track = Track });
             MoveAstronauts();
+        }
+
+        public void CleanUp()
+        {
+            DriversChanged -= OnTimedEvent;
+            //Data.CurrentRace.DriversChanged -= Visualisatie.OnDriversChanged;
+        }
+
+        public SectionData getNext(LinkedListNode<Section> s)
+        {
+            if (s.Next == null) // als de volgende null is, einde van de track
+            {
+                return GetSectionData(Track.Sections.First.Value); // zet hem naar de eerste van de track
+            }
+            return GetSectionData(s.Next.Value); // anders volgende
         }
 
         public void MoveAstronauts()
         {
-            timer.Enabled = false;
-            int i = 0; // bij een for de counter
-            foreach (var section in Track.Sections) // voor elke section in Track.Sections
+            LinkedListNode<Section> iterator = Track.Sections.Last; // Pakt laatste section
+            while (iterator != null) // als hij niet null is, dus als er een section is
             {
-                var data = GetSectionData(section);
-                while (i < _positions.Count - 1)
+                SectionData SectData = GetSectionData(iterator.Value); // getsectiondata van die iterator
+                if (SectData.Left != null) // als er iemand op links staat
                 {
-                    if (_positions.ElementAt(i).Value.Left == data.Left) // links
+                    if (iterator.Value.SectionType == SectionTypes.Finish)
                     {
-                        var LeftAstronaut = _positions.ElementAt(i).Value.Left;
-                        if (LeftAstronaut != null)
+                        if (_rounds[SectData.Left] > 2) // 2 rondes
                         {
-                            if (_positions.ElementAt(i + 1).Value.Left == null) // Als er geen "astronaut" in de volgende sectie op links staat
-                            {
-                                _positions.ElementAt(i + 1).Value.Left = LeftAstronaut; // De volgende plek waar iemand kan staan wordt de plek van de astronaut
-                                data.Left = null;
-                                DriversChanged?.Invoke(this, new DriversChangedEventArgs() { track = Track });
-                                i++;
-                            }
+                            SectData.Left.Name = null; // haal weg
+                            CleanUp();
                         }
+                        else _rounds[SectData.Left] += 1;
                     }
-                    
-                    if (_positions.ElementAt(i).Value.Right == data.Right) // rechts
+                    int leftperformance = SectData.Left.Equipment.Performance * SectData.Left.Equipment.Speed; // bepaal de performance voor diegene
+                    SectData.DistanceLeft += leftperformance; // tel deze bij distanceleft op
+                    if (SectData.DistanceLeft > 100) // als deze groter dan 100 is
                     {
-                        var RightAstronaut = _positions.ElementAt(i).Value.Right;
-                        if (RightAstronaut != null)
+                        var volgende = getNext(iterator);
+                        if (volgende.Left != null) // als er al iemand staat
                         {
-                            if (_positions.ElementAt(i + 1).Value.Right == null) // Als er geen "astronaut" in de volgende sectie op rechts staat
-                            {
-                                _positions.ElementAt(i + 1).Value.Right = RightAstronaut; // De volgende plek waar iemand kan staan wordt de plek van de astronaut
-                                data.Right = null;
-                                DriversChanged?.Invoke(this, new DriversChangedEventArgs() { track = Track });
-                                i++;
-                            }
+                            SectData.DistanceLeft += 100;
+                        }
+                        else
+                        {
+                            volgende.Left = SectData.Left;
+                            SectData.Left = null; // maak de vorige leeg
+                            SectData.DistanceLeft = 0; // reset de distanceleft
                         }
                     }
                 }
+                if (SectData.Right != null) // als er iemand  op rechts staat
+                {
+                    if (iterator.Value.SectionType == SectionTypes.Finish)
+                    {
+                        if (_rounds[SectData.Right] > 2) // 2 rondes
+                        {
+                            SectData.Right.Name = null; // haal weg
+                            CleanUp();
+                        }
+                        else _rounds[SectData.Right] += 1;
+                    }
+                    int rightperformance = SectData.Right.Equipment.Performance * SectData.Right.Equipment.Speed; // bepaal de performance voor diegene
+                    SectData.DistanceRight += rightperformance; // tel deze bij distanceleft op
+                    if (SectData.DistanceRight > 100) // als deze groter dan 100 is
+                    {
+                        var volgende = getNext(iterator);  // ga naar de volgende section
+                        if (volgende.Right != null)
+                        {
+                            SectData.DistanceRight += 100;
+                        }
+                        else
+                        {
+                            volgende.Right = SectData.Right;
+                            SectData.Right = null; // maak de vorige leeg
+                            SectData.DistanceRight = 0;
+                        }
+                    }
+                }
+                iterator = iterator.Previous; // ga 1 terug
             }
-            timer.Enabled = true;
         }
-
-        /*public static bool PlaceParticipant2(int SectieTeller)
-        {
-            if (SectionNext == SectieTeller)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-                SectionNext++;
-            }
-            
-        }*/
 
         public SectionData GetSectionData(Section section)
         {
             if (!_positions.ContainsKey(section))
-                _positions.Add(section, new SectionData(null, null));
+                _positions.Add(section, new SectionData(null, null, 0, 0));
             return _positions[section];
         }
 
         public void Start()
         {
+            RandomizeEquipment();
             timer.Start();
         }
 
         public void RandomizeEquipment()
         {
-            foreach (iEquipment equipment in Participants)
+            foreach (iParticipant participants in Participants)
             {
-                int random = _random.Next();
-                equipment.Quality = random;
-                equipment.Performance = random;
+                int random = _random.Next(5,10); // 5,10
+                //Console.WriteLine(random);
+                participants.Equipment.Speed = random;
+                participants.Equipment.Quality = random;
+                participants.Equipment.Performance = random;
             }
         }
 
@@ -121,62 +151,29 @@ namespace Controller
         { // Deelnemers op startgrid zetten
             Track = t;
             Participants = p;
-            Queue<Section> starts = new Queue<Section>();
-            Queue<Section> normalSections = new Queue<Section>();
-            foreach (Section s in t.Sections)
-            {
-                if (s.SectionType == SectionTypes.StartGrid)
-                { // Als SectionType een start is, enqueue deze
-                    starts.Enqueue(s);
-                }
-                else normalSections.Enqueue(s);
+            LinkedListNode<Section> iterator = t.Sections.First;
+            while (iterator.Value.SectionType != SectionTypes.Finish)
+            { // iterator gaat door alle sections van de track heen tot de finish
+                iterator = iterator.Next;
             }
-            int participantCount = 0; // Teller voor participants
-            int sectionsCount = 0; // Teller voor sections
-            if ((p.Count % 2) == 0)
+            iterator = iterator.Previous; // degene vóór de finish
+            foreach (iParticipant participant in p) // voor elke participant in de track
             {
-                while (sectionsCount < t.Sections.Count) // Terwijl teller kleiner is dan participants.Count
-                { // Voeg deze toe aan _positions
-                    if (t.Sections.ElementAt(sectionsCount).SectionType == SectionTypes.StartGrid && participantCount < p.Count)
-                    {
-                        _positions.Add(starts.Dequeue(), new SectionData(p[participantCount], p[participantCount + 1])); // Weet niet of dit goed is. GetSectionData(starts.Dequeue())
-                        participantCount += 2;
-                        sectionsCount++;
-                    }
-                    else if (t.Sections.ElementAt(sectionsCount).SectionType == SectionTypes.StartGrid)
-                    {
-                        _positions.Add(starts.Dequeue(), new SectionData(null, null)); // Positie toevoegen aan _positions, niks in zetten
-                        sectionsCount++;
-
-                    }
-                    else
-                    {
-                        _positions.Add(normalSections.Dequeue(), new SectionData(null, null)); // Positie toevoegen aan _positions, niks in zetten
-                        sectionsCount++;
-                    }
+                _rounds.Add(participant, -1);
+                SectionData SectData = GetSectionData(iterator.Value);  // sectdata van de sections
+                if (SectData.Left == null) // als er niemand op links staat
+                {
+                    SectData.Left = participant; // plaats de participant hier
                 }
-            }
-            else
-            {
-                while (sectionsCount < t.Sections.Count - 1) // Terwijl teller kleiner is dan participants.Count
-                { // Voeg deze toe aan _positions
-                    if (t.Sections.ElementAt(sectionsCount).SectionType == SectionTypes.StartGrid && participantCount < p.Count - 1)
-                    {
-                        _positions.Add(starts.Dequeue(), new SectionData(p[participantCount], null)); // Weet niet of dit goed is. GetSectionData(starts.Dequeue())
-                        participantCount += 2;
-                        sectionsCount++;
-                    }
-                    else if (t.Sections.ElementAt(sectionsCount).SectionType == SectionTypes.StartGrid)
-                    {
-                        _positions.Add(starts.Dequeue(), new SectionData(null, null)); // Positie toevoegen aan _positions, niks in zetten
-                        sectionsCount++;
-
-                    }
-                    else
-                    {
-                        _positions.Add(normalSections.Dequeue(), new SectionData(null, null)); // Positie toevoegen aan _positions, niks in zetten
-                        sectionsCount++;
-                    }
+                else if (SectData.Right == null) // als er niemand op rechts staat 
+                {
+                    SectData.Right = participant; // plaats de participant hier
+                }
+                else
+                {
+                    iterator = iterator.Previous; // ga naar de vorige
+                    SectionData Previous = GetSectionData(iterator.Value); // zet de vorige sectiondata in variabele Previous
+                    Previous.Left = participant; // en plaats hier links de participant
                 }
             }
         }

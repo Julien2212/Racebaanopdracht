@@ -13,10 +13,13 @@ namespace Model
         public iEquipment Equipment { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public iParticipant.TeamColors TeamColor { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
-        public SectionData(iParticipant left, iParticipant right )
+        public SectionData(iParticipant left, iParticipant right, int distanceright, int distanceleft)
         {
             Left = left;
+            DistanceLeft = distanceleft;
+
             Right = right;
+            DistanceRight = distanceright;
         }
     }
 }
