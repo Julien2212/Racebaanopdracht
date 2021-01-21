@@ -10,7 +10,6 @@ namespace Model
         public int Points { get; set; }
         public iEquipment Equipment { get; set; }
         public TeamColors TeamColor { get; set; }
-
         enum TeamColors
         {
             Red,

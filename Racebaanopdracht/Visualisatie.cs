@@ -33,7 +33,10 @@ namespace Racebaanopdracht
 
         public static void Initialize()
         {
-
+            Data.CurrentRace.DriversChanged += OnDriversChanged;
+            Data.CurrentRace.OnRaceFinishedHandler += OnRaceFinished;
+            Console.SetCursorPosition(0, 0);
+            Console.WriteLine($"CurrentRace: {Data.CurrentRace.Track.Name} ");
         }
 
         public static void OnDriversChanged(object sender, DriversChangedEventArgs e)
@@ -41,17 +44,33 @@ namespace Racebaanopdracht
             DrawTrack(e.track);
         }
 
+        public static void OnRaceFinished(object sender, NewDriversChangedEventArgs e)
+        {
+            Data.NextRace();
+            Initialize();
+            Data.CurrentRace.Start();
+        }
+
         public static string ReplaceString(string s, iParticipant left, iParticipant right)
         {
             if (left != null && left.Name != null)
             {
-                s = s.Replace('1', left.Name[0]);
+                if (left.Equipment.IsBroken)
+                {
+                    s = s.Replace('1', '¿');
+                }
+                else s = s.Replace('1', left.Name[0]);
+
             }
             else s = s.Replace('1', ' '); // wanneer er een 1 staat maar er hoort niks te staan, weghalen
 
             if (right != null && right.Name != null)
             {
-                s = s.Replace('2', right.Name[0]);
+                if (right.Equipment.IsBroken)
+                {
+                    s = s.Replace('2', '¿');
+                }
+                else s = s.Replace('2', right.Name[0]);
             }
             else s = s.Replace('2', ' '); // wanneer er een 2 staat maar er hoort niks te staan, weghalen
           

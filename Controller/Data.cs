@@ -20,6 +20,7 @@ namespace Controller
             competition = new Competition();
             addParticipants();
             addTracks();
+            
         }
 
         static void addParticipants()
@@ -47,9 +48,18 @@ namespace Controller
                 SectionTypes.Straight, SectionTypes.Straight, SectionTypes.Straight, SectionTypes.RightCorner,
 
             };
+            SectionTypes[] track2 = new SectionTypes[]
+            {
+               SectionTypes.StartGrid, SectionTypes.StartGrid,SectionTypes.StartGrid, SectionTypes.Finish, SectionTypes.RightCorner, SectionTypes.Straight,
+                SectionTypes.LeftCorner, SectionTypes.Straight, SectionTypes.Straight, SectionTypes.RightCorner,
+                SectionTypes.RightCorner, SectionTypes.Straight, SectionTypes.Straight, SectionTypes.LeftCorner,
+                SectionTypes.RightCorner, SectionTypes.Straight, SectionTypes.LeftCorner, SectionTypes.RightCorner,
+                SectionTypes.RightCorner, SectionTypes.LeftCorner, SectionTypes.Straight, SectionTypes.RightCorner,
+                SectionTypes.Straight, SectionTypes.Straight, SectionTypes.Straight, SectionTypes.RightCorner,
+            };
             competition.Tracks = new Queue<Track>();
             competition.Tracks.Enqueue(new Track("Track1", zeewolde));
-            competition.Tracks.Enqueue(new Track("Track2", zeewolde));
+            competition.Tracks.Enqueue(new Track("Track2", track2));
         }
 
         public static void NextRace()

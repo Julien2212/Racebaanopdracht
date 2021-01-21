@@ -19,8 +19,11 @@ namespace Controller
 
         private Timer timer = new Timer(500); // 0,5 sec
         public event EventHandler<DriversChangedEventArgs> DriversChanged;
-        public static int x = 0;
+        private int _roundsteller = 0;
         private Dictionary<iParticipant, int> _rounds;
+
+        ///
+        public event EventHandler<NewDriversChangedEventArgs> OnRaceFinishedHandler;
 
         public Race(Track t, List<iParticipant> participants)
         {
@@ -34,17 +37,27 @@ namespace Controller
             Start();
             timer.Elapsed += OnTimedEvent;
         }
+
         public void OnTimedEvent(object sender, EventArgs e)
         {
-
-            DriversChanged?.Invoke(this, new DriversChangedEventArgs() { track = Track });
-            MoveAstronauts();
+            BreakTheRocket();
+            if (_roundsteller == Participants.Count)
+            {
+                DriversChanged?.Invoke(this, new DriversChangedEventArgs() { track = Track });
+                RaceFinished();
+            }
+            else
+            {
+                DriversChanged?.Invoke(this, new DriversChangedEventArgs() { track = Track });
+                MoveAstronauts();
+            }
         }
 
         public void CleanUp()
         {
-            DriversChanged -= OnTimedEvent;
-            //Data.CurrentRace.DriversChanged -= Visualisatie.OnDriversChanged;
+            DriversChanged = null;
+            timer.Enabled = false;
+            OnRaceFinishedHandler = null;
         }
 
         public SectionData getNext(LinkedListNode<Section> s)
@@ -62,64 +75,143 @@ namespace Controller
             while (iterator != null) // als hij niet null is, dus als er een section is
             {
                 SectionData SectData = GetSectionData(iterator.Value); // getsectiondata van die iterator
-                if (SectData.Left != null) // als er iemand op links staat
+
+                if (SectData.Left != null && !SectData.Left.Equipment.IsBroken) // als er iemand  op links staat
                 {
-                    if (iterator.Value.SectionType == SectionTypes.Finish)
-                    {
-                        if (_rounds[SectData.Left] > 2) // 2 rondes
-                        {
-                            SectData.Left.Name = null; // haal weg
-                            CleanUp();
-                        }
-                        else _rounds[SectData.Left] += 1;
-                    }
                     int leftperformance = SectData.Left.Equipment.Performance * SectData.Left.Equipment.Speed; // bepaal de performance voor diegene
                     SectData.DistanceLeft += leftperformance; // tel deze bij distanceleft op
                     if (SectData.DistanceLeft > 100) // als deze groter dan 100 is
                     {
-                        var volgende = getNext(iterator);
-                        if (volgende.Left != null) // als er al iemand staat
+                        if (iterator.Value.SectionType == SectionTypes.Finish)
                         {
-                            SectData.DistanceLeft += 100;
+                            if (_rounds[SectData.Left] > 1) // 2 rondes
+                            {
+                                SectData.Left = null; // haal weg
+                                SectData.DistanceLeft = 0;
+                                _roundsteller++;
+                            }
+                            else
+                            {
+                                _rounds[SectData.Left] += 1;
+                                var volgende = getNext(iterator);  // ga naar de volgende section
+                                if (volgende.Left != null)
+                                {
+                                    if (volgende.Right == null)
+                                    {
+                                        volgende.Right = SectData.Left;
+                                        SectData.Left = null; // maak de vorige leeg
+                                        SectData.DistanceLeft = 0;
+                                    }
+                                    else
+                                    {
+                                        SectData.DistanceLeft += 100;
+                                    }
+                                }
+                                else
+                                {
+                                    volgende.Left = SectData.Left;
+                                    SectData.Left = null; // maak de vorige leeg
+                                    SectData.DistanceLeft = 0;
+                                }
+                            }
                         }
                         else
                         {
-                            volgende.Left = SectData.Left;
-                            SectData.Left = null; // maak de vorige leeg
-                            SectData.DistanceLeft = 0; // reset de distanceleft
+                            var volgende = getNext(iterator);  // ga naar de volgende section
+                            if (volgende.Left != null)
+                            {
+                                if (volgende.Right == null)
+                                {
+                                    volgende.Right = SectData.Left;
+                                    SectData.Left = null; // maak de vorige leeg
+                                    SectData.DistanceLeft = 0;
+                                }
+                                else
+                                {
+                                    SectData.DistanceLeft += 100;
+                                }
+                            }
+                            else
+                            {
+                                volgende.Left = SectData.Left;
+                                SectData.Left = null; // maak de vorige leeg
+                                SectData.DistanceLeft = 0;
+                            }
                         }
                     }
                 }
-                if (SectData.Right != null) // als er iemand  op rechts staat
+                if (SectData.Right != null && !SectData.Right.Equipment.IsBroken) // als er iemand  op rechts staat
                 {
-                    if (iterator.Value.SectionType == SectionTypes.Finish)
-                    {
-                        if (_rounds[SectData.Right] > 2) // 2 rondes
-                        {
-                            SectData.Right.Name = null; // haal weg
-                            CleanUp();
-                        }
-                        else _rounds[SectData.Right] += 1;
-                    }
                     int rightperformance = SectData.Right.Equipment.Performance * SectData.Right.Equipment.Speed; // bepaal de performance voor diegene
                     SectData.DistanceRight += rightperformance; // tel deze bij distanceleft op
                     if (SectData.DistanceRight > 100) // als deze groter dan 100 is
                     {
-                        var volgende = getNext(iterator);  // ga naar de volgende section
-                        if (volgende.Right != null)
+                        if (iterator.Value.SectionType == SectionTypes.Finish)
                         {
-                            SectData.DistanceRight += 100;
+                            if (_rounds[SectData.Right] > 1) // 2 rondes
+                            {
+                                SectData.Right = null; // haal weg
+                                SectData.DistanceRight = 0;
+                                _roundsteller++;
+                            }
+                            else
+                            {
+                                _rounds[SectData.Right] += 1;
+                                var volgende = getNext(iterator);  // ga naar de volgende section
+                                if (volgende.Right != null)
+                                {
+                                    if (volgende.Left == null)
+                                    {
+                                        volgende.Left = SectData.Right;
+                                        SectData.Right = null; // maak de vorige leeg
+                                        SectData.DistanceRight = 0;
+                                    }
+                                    else
+                                    {
+                                        SectData.DistanceRight += 100;
+                                    }
+                                }
+                                else
+                                {
+                                    volgende.Right = SectData.Right;
+                                    SectData.Right = null; // maak de vorige leeg
+                                    SectData.DistanceRight = 0;
+                                }
+                            }
                         }
                         else
                         {
-                            volgende.Right = SectData.Right;
-                            SectData.Right = null; // maak de vorige leeg
-                            SectData.DistanceRight = 0;
+                            var volgende = getNext(iterator);  // ga naar de volgende section
+                            if (volgende.Right != null)
+                            {
+                                if (volgende.Left == null)
+                                {
+                                    volgende.Left = SectData.Right;
+                                    SectData.Right = null; // maak de vorige leeg
+                                    SectData.DistanceRight = 0;
+                                }
+                                else
+                                {
+                                    SectData.DistanceRight += 100;
+                                }
+                            }
+                            else
+                            {
+                                volgende.Right = SectData.Right;
+                                SectData.Right = null; // maak de vorige leeg
+                                SectData.DistanceRight = 0;
+                            }
                         }
                     }
                 }
                 iterator = iterator.Previous; // ga 1 terug
             }
+        }
+
+        public void RaceFinished()
+        {
+            OnRaceFinishedHandler?.Invoke(this, new NewDriversChangedEventArgs() { track = Track });
+            CleanUp();
         }
 
         public SectionData GetSectionData(Section section)
@@ -139,14 +231,26 @@ namespace Controller
         {
             foreach (iParticipant participants in Participants)
             {
-                int random = _random.Next(5,10); // 5,10
-                //Console.WriteLine(random);
+                int random = _random.Next(7, 15); // 5,10
+                                                  //Console.WriteLine(random);
                 participants.Equipment.Speed = random;
                 participants.Equipment.Quality = random;
                 participants.Equipment.Performance = random;
             }
         }
 
+        public void BreakTheRocket()
+        {
+            foreach (iParticipant participants in Participants)
+            {
+                int random = _random.Next(1, 40); // 5,10
+                participants.Equipment.IsBroken = random == 1? true : false; // als random tussen 5 en 7, true en anders false
+                if (participants.Equipment.IsBroken && participants.Equipment.Speed > 5)
+                {
+                    participants.Equipment.Speed -= 1;
+                }
+            }
+        }
         public void SetStartPosition(Track t, List<iParticipant> p)
         { // Deelnemers op startgrid zetten
             Track = t;
@@ -159,7 +263,7 @@ namespace Controller
             iterator = iterator.Previous; // degene vóór de finish
             foreach (iParticipant participant in p) // voor elke participant in de track
             {
-                _rounds.Add(participant, -1);
+                _rounds.Add(participant, 0);
                 SectionData SectData = GetSectionData(iterator.Value);  // sectdata van de sections
                 if (SectData.Left == null) // als er niemand op links staat
                 {
