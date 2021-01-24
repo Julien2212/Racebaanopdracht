@@ -17,7 +17,7 @@ namespace Controller
         private Dictionary<Section, SectionData> _positions;
         private List<Track> tracks;
 
-        private Timer timer = new Timer(200); // 0,5 sec
+        private Timer timer = new Timer(250); // 0,5 sec
         public event EventHandler<DriversChangedEventArgs> DriversChanged;
         private int _roundsteller = 0;
         private Dictionary<iParticipant, int> _rounds;
@@ -167,7 +167,7 @@ namespace Controller
                 if (SectData.Right != null && !SectData.Right.Equipment.IsBroken) // als er iemand  op rechts staat
                 {
                     BreakTheRocket(SectData.Right, iterator.Value);
-                    OpslaanSnelheid(SectData.Left, iterator.Value);
+                    OpslaanSnelheid(SectData.Right, iterator.Value);
                     int rightperformance = SectData.Right.Equipment.Performance * SectData.Right.Equipment.Speed; // bepaal de performance voor diegene
                     SectData.DistanceRight += rightperformance; // tel deze bij distanceleft op
                     if (SectData.DistanceRight > 100) // als deze groter dan 100 is
@@ -309,8 +309,16 @@ namespace Controller
         {
             foreach (iParticipant participants in Participants)
             {
-                int random = _random.Next(1, 40);
-                participants.Equipment.IsBroken = random == 1? true : false; // als random tussen 5 en 7, true en anders false
+                int random = _random.Next(1, 100);
+                if (random == 1)
+                {
+                    participants.Equipment.IsBroken = true;
+                }
+                if (random >= 20 && random <= 25)
+                {
+                    participants.Equipment.IsBroken = false;
+                }
+                //participants.Equipment.IsBroken = random == 1? true : false; /
                
                 if (participants.Equipment.IsBroken)
                 {

@@ -20,7 +20,6 @@ namespace Controller
             competition = new Competition();
             addParticipants();
             addTracks();
-            
         }
 
         static void addParticipants()

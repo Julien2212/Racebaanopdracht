@@ -6,10 +6,22 @@ namespace Model
 {
     public class GenericGegevens<T> where T : iHelikopterview
     {
-        private List<T> _list = new List<T>();
+        private List<iHelikopterview> _list = new List<iHelikopterview>();
         public void FillList(T t)
         {
-            _list.Add(t);
+            t.Add(_list);
+        }
+
+        public string ListCheck()
+        { 
+            if (_list.Count == 0)
+            {
+                return " ";
+            }
+            else
+            {
+                return _list[0].BesteDeelnemer(_list);
+            }
         }
     }
 }

@@ -37,6 +37,7 @@ namespace Racebaanopdracht
             Data.CurrentRace.OnRaceFinishedHandler += OnRaceFinished;
             Console.SetCursorPosition(0, 0);
             Console.WriteLine($"CurrentRace: {Data.CurrentRace.Track.Name} ");
+
         }
 
         public static void OnDriversChanged(object sender, DriversChangedEventArgs e)
@@ -48,6 +49,8 @@ namespace Racebaanopdracht
         {
             Data.NextRace();
             Initialize();
+            Console.SetCursorPosition(0, 1);
+            Console.WriteLine($"De Astronaut met de meeste punten is: {Data.competition.gegevens.ListCheck()}");
             Data.CurrentRace.Start();
         }
 

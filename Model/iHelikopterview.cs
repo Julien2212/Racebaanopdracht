@@ -12,5 +12,10 @@ namespace Model
         public void Add(List<iHelikopterview> lijst)
         {
         }
+
+        public string BesteDeelnemer(List<iHelikopterview> lijst)
+        {
+            return "s";
+        }
     }
 }
