@@ -17,13 +17,21 @@ namespace Controller
         private Dictionary<Section, SectionData> _positions;
         private List<Track> tracks;
 
-        private Timer timer = new Timer(500); // 0,5 sec
+        private Timer timer = new Timer(200); // 0,5 sec
         public event EventHandler<DriversChangedEventArgs> DriversChanged;
         private int _roundsteller = 0;
         private Dictionary<iParticipant, int> _rounds;
 
         ///
-        public event EventHandler<NewDriversChangedEventArgs> OnRaceFinishedHandler;
+        public event EventHandler<DriversChangedEventArgs> OnRaceFinishedHandler;
+
+        public Queue<iParticipant> EindstandQueue = new Queue<iParticipant>();
+
+        Dictionary<iParticipant, DateTime> TijdDict = new Dictionary<iParticipant, DateTime>();
+        public DateTime startTijd;
+        public GenericGegevens<Tijd> opslaanGegevensTijd = new GenericGegevens<Tijd>();
+        public GenericGegevens<Kapot> opslaanGegevensKapot = new GenericGegevens<Kapot>();
+        public GenericGegevens<Speed> opslaanGegevensSpeed = new GenericGegevens<Speed>();
 
         public Race(Track t, List<iParticipant> participants)
         {
@@ -35,16 +43,17 @@ namespace Controller
             _rounds = new Dictionary<iParticipant, int>();
             SetStartPosition(Track, Participants);
             Start();
+            startTijd = DateTime.Now;
             timer.Elapsed += OnTimedEvent;
         }
 
         public void OnTimedEvent(object sender, EventArgs e)
         {
-            BreakTheRocket();
             if (_roundsteller == Participants.Count)
             {
                 DriversChanged?.Invoke(this, new DriversChangedEventArgs() { track = Track });
                 RaceFinished();
+                
             }
             else
             {
@@ -78,6 +87,8 @@ namespace Controller
 
                 if (SectData.Left != null && !SectData.Left.Equipment.IsBroken) // als er iemand  op links staat
                 {
+                    BreakTheRocket(SectData.Left, iterator.Value);
+                    OpslaanSnelheid(SectData.Left, iterator.Value);
                     int leftperformance = SectData.Left.Equipment.Performance * SectData.Left.Equipment.Speed; // bepaal de performance voor diegene
                     SectData.DistanceLeft += leftperformance; // tel deze bij distanceleft op
                     if (SectData.DistanceLeft > 100) // als deze groter dan 100 is
@@ -86,6 +97,7 @@ namespace Controller
                         {
                             if (_rounds[SectData.Left] > 1) // 2 rondes
                             {
+                                EindstandQueue.Enqueue(SectData.Left);
                                 SectData.Left = null; // haal weg
                                 SectData.DistanceLeft = 0;
                                 _roundsteller++;
@@ -98,6 +110,8 @@ namespace Controller
                                 {
                                     if (volgende.Right == null)
                                     {
+                                        OpslaanTijd(SectData.Left, iterator.Value);
+
                                         volgende.Right = SectData.Left;
                                         SectData.Left = null; // maak de vorige leeg
                                         SectData.DistanceLeft = 0;
@@ -109,6 +123,8 @@ namespace Controller
                                 }
                                 else
                                 {
+                                    OpslaanTijd(SectData.Left, iterator.Value);
+
                                     volgende.Left = SectData.Left;
                                     SectData.Left = null; // maak de vorige leeg
                                     SectData.DistanceLeft = 0;
@@ -122,6 +138,8 @@ namespace Controller
                             {
                                 if (volgende.Right == null)
                                 {
+                                    OpslaanTijd(SectData.Left, iterator.Value);
+
                                     volgende.Right = SectData.Left;
                                     SectData.Left = null; // maak de vorige leeg
                                     SectData.DistanceLeft = 0;
@@ -133,6 +151,8 @@ namespace Controller
                             }
                             else
                             {
+                                OpslaanTijd(SectData.Left, iterator.Value);
+
                                 volgende.Left = SectData.Left;
                                 SectData.Left = null; // maak de vorige leeg
                                 SectData.DistanceLeft = 0;
@@ -140,8 +160,14 @@ namespace Controller
                         }
                     }
                 }
+                else if (SectData.Left != null)
+                {
+                    BreakTheRocket(SectData.Left, iterator.Value);
+                }
                 if (SectData.Right != null && !SectData.Right.Equipment.IsBroken) // als er iemand  op rechts staat
                 {
+                    BreakTheRocket(SectData.Right, iterator.Value);
+                    OpslaanSnelheid(SectData.Left, iterator.Value);
                     int rightperformance = SectData.Right.Equipment.Performance * SectData.Right.Equipment.Speed; // bepaal de performance voor diegene
                     SectData.DistanceRight += rightperformance; // tel deze bij distanceleft op
                     if (SectData.DistanceRight > 100) // als deze groter dan 100 is
@@ -150,6 +176,7 @@ namespace Controller
                         {
                             if (_rounds[SectData.Right] > 1) // 2 rondes
                             {
+                                EindstandQueue.Enqueue(SectData.Right);
                                 SectData.Right = null; // haal weg
                                 SectData.DistanceRight = 0;
                                 _roundsteller++;
@@ -162,6 +189,7 @@ namespace Controller
                                 {
                                     if (volgende.Left == null)
                                     {
+                                        OpslaanTijd(SectData.Right, iterator.Value);
                                         volgende.Left = SectData.Right;
                                         SectData.Right = null; // maak de vorige leeg
                                         SectData.DistanceRight = 0;
@@ -173,6 +201,7 @@ namespace Controller
                                 }
                                 else
                                 {
+                                    OpslaanTijd(SectData.Right, iterator.Value);
                                     volgende.Right = SectData.Right;
                                     SectData.Right = null; // maak de vorige leeg
                                     SectData.DistanceRight = 0;
@@ -186,6 +215,7 @@ namespace Controller
                             {
                                 if (volgende.Left == null)
                                 {
+                                    OpslaanTijd(SectData.Right, iterator.Value);
                                     volgende.Left = SectData.Right;
                                     SectData.Right = null; // maak de vorige leeg
                                     SectData.DistanceRight = 0;
@@ -197,6 +227,7 @@ namespace Controller
                             }
                             else
                             {
+                                OpslaanTijd(SectData.Right, iterator.Value);
                                 volgende.Right = SectData.Right;
                                 SectData.Right = null; // maak de vorige leeg
                                 SectData.DistanceRight = 0;
@@ -204,13 +235,48 @@ namespace Controller
                         }
                     }
                 }
+                else if (SectData.Right != null)
+                {
+                    BreakTheRocket(SectData.Right, iterator.Value);
+                }
                 iterator = iterator.Previous; // ga 1 terug
             }
+        }
+        public void OpslaanTijd(iParticipant participant, Section sectie)
+        {
+            Tijd tijd = new Tijd();
+            tijd.Naam = participant.Name;
+            tijd.Sectie = sectie;
+            tijd.RondeTijd = SectieTijd();
+            opslaanGegevensTijd.FillList(tijd);
+        }
+
+        public TimeSpan SectieTijd()
+        {
+            return DateTime.Now - startTijd;
+        }
+
+        public void OpslaanKapot(iParticipant participant, Section sectie)
+        {
+            Kapot kapot = new Kapot();
+            kapot.Naam = participant.Name;
+            kapot.Sectie = sectie;
+            opslaanGegevensKapot.FillList(kapot);
+        }
+
+        public void OpslaanSnelheid(iParticipant participant, Section sectie)
+        {
+            Speed speed = new Speed();
+            speed.Naam = participant.Name;
+            speed.Sectie = sectie;
+            speed.Snelheid = participant.Equipment.Speed;
+            opslaanGegevensSpeed.FillList(speed);
         }
 
         public void RaceFinished()
         {
-            OnRaceFinishedHandler?.Invoke(this, new NewDriversChangedEventArgs() { track = Track });
+            Data.competition.BepaalEindstand(EindstandQueue);
+            OnRaceFinishedHandler?.Invoke(this, new DriversChangedEventArgs() { track = Track });
             CleanUp();
         }
 
@@ -238,16 +304,20 @@ namespace Controller
                 participants.Equipment.Performance = random;
             }
         }
-
-        public void BreakTheRocket()
+        
+        public void BreakTheRocket(iParticipant participant, Section sectie)
         {
             foreach (iParticipant participants in Participants)
             {
-                int random = _random.Next(1, 40); // 5,10
+                int random = _random.Next(1, 40);
                 participants.Equipment.IsBroken = random == 1? true : false; // als random tussen 5 en 7, true en anders false
-                if (participants.Equipment.IsBroken && participants.Equipment.Speed > 5)
+               
+                if (participants.Equipment.IsBroken)
                 {
-                    participants.Equipment.Speed -= 1;
+                    if (participants.Equipment.Speed > 5)
+                    {
+                        participants.Equipment.Speed -= 1;
+                    }
                 }
             }
         }

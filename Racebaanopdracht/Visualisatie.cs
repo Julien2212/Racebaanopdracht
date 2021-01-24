@@ -44,7 +44,7 @@ namespace Racebaanopdracht
             DrawTrack(e.track);
         }
 
-        public static void OnRaceFinished(object sender, NewDriversChangedEventArgs e)
+        public static void OnRaceFinished(object sender, DriversChangedEventArgs e)
         {
             Data.NextRace();
             Initialize();
