@@ -34,8 +34,6 @@ namespace Model
         {
             int BesteDeelnemerPunten = 0;
             string BesteDeelnemerNaam = " ";
-            //BesteDeelnemerPunten.Naam = " ";
-            //BesteDeelnemerPunten.PuntenDeelnemer = 0;
             foreach (var item in lijst)
             {
                 var Punten = item as Punten;

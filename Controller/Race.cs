@@ -297,8 +297,7 @@ namespace Controller
         {
             foreach (iParticipant participants in Participants)
             {
-                int random = _random.Next(7, 15); // 5,10
-                                                  //Console.WriteLine(random);
+                int random = _random.Next(7, 15); 
                 participants.Equipment.Speed = random;
                 participants.Equipment.Quality = random;
                 participants.Equipment.Performance = random;
@@ -318,7 +317,7 @@ namespace Controller
                 {
                     participants.Equipment.IsBroken = false;
                 }
-                //participants.Equipment.IsBroken = random == 1? true : false; /
+                //participants.Equipment.IsBroken = random == 1? true : false;
                
                 if (participants.Equipment.IsBroken)
                 {

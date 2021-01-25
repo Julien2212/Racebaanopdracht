@@ -9,26 +9,26 @@ using Model;
 
 namespace Racebaanopdracht
 {
-    public static class Visualisatie
+    public static class Visualisatie1
     {
         #region graphics
+        // 1 en 2 zijn de plekken waar een Astronaut zich kan bevinden
+        private static string[] _startGridHorizontal = { "----", "  1 ", "  2 ", "----" }; // 
+        private static string[] _startGridVertical = { "|  |", "|12|", "|  |", "|  |" }; // 
+        private static string[] _finishHorizontal = { "----", " #1 ", " #2 ", "----" }; // 
+        private static string[] _finishVertical = { "|  |", "|##|", "|  |", "|  |" }; // 
+        private static string[] _trackHorizontal = { "----", " 1  ", " 2  ", "----" }; // 
+        private static string[] _trackVertical = { @"|  |", @"|1 |", @"| 2|", @"|  |" }; //
 
-        private static string[] _startGridHorizontal = { "----", "  1 ", "  2 ", "----" };
-        private static string[] _startGridVertical = { "|  |", "|12|", "|  |", "|  |" };
-        private static string[] _finishHorizontal = { "----", " #1 ", " #2 ", "----" };
-        private static string[] _finishVertical = { "|  |", "|##|", "|  |", "|  |" };
-        private static string[] _trackHorizontal = { "----", " 1  ", " 2  ", "----" };
-        private static string[] _trackVertical = { @"|  |", @"|1 |", @"| 2|", @"|  |" };
+        private static string[] _eastRight = { @"--\ ", @" 1 \", @" 2 |", @"\  |" }; // 
+        private static string[] _southRight = { "|  |", "1  /", " 2 /", "--- " }; //
+        private static string[] _northRight = { " ---", "/1  ", "|2 /", "|  |" }; //
+        private static string[] _westRight = { "|  |", @"|1 \", @"\ 2 ", " ---" }; // 
 
-        private static string[] _eastRight = { @"--\ ", @" 1 \", @" 2 |", @"\  |" };
-        private static string[] _southRight = { "|  |", "1  /", " 2 /", "--- " };
-        private static string[] _northRight = { " ---", "/1  ", "|2 /", "|  |" };
-        private static string[] _westRight = { "|  |", @"|1 \", @"\ 2 ", " ---" };
-
-        private static string[] _eastLeft = { "|  |", "/1 /", " 2 /", "--- " };
-        private static string[] _southLeft = { "|  |", @"|1  ", @"\2  ", " ---" };
-        private static string[] _westLeft = { " ---", "/ 1 ", "|2  ", "|  |" };
-        private static string[] _northLeft = { @"--\ ", @"1  \", @"\2 |", "|  |" };
+        private static string[] _eastLeft = { "|  |", "/1 /", " 2 /", "--- " }; //
+        private static string[] _southLeft = { "|  |", @"|1  ", @"\2  ", " ---" }; // 
+        private static string[] _westLeft = { " ---", "/ 1 ", "|2  ", "|  |" }; //
+        private static string[] _northLeft = { @"--\ ", @"1  \", @"\2 |", "|  |" }; //
         #endregion
 
         public static void Initialize()

@@ -11,7 +11,7 @@ namespace Model
         public List<iParticipant> Participants { get; set; }
         public Queue<Track> Tracks { get; set; }
 
-        public GenericGegevens<Punten> gegevens = new GenericGegevens<Punten>(); // goed
+        public GenericGegevens<Punten> gegevens = new GenericGegevens<Punten>();
 
 
         public Competition()

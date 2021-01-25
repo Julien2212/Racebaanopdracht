@@ -13,7 +13,7 @@ namespace Racebaanopdracht
             Data.Initialize();
             Data.NextRace();
 
-            Visualisatie.Initialize();
+            Visualisatie1.Initialize();
            
 
             for (; ; )
