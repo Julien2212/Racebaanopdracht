@@ -6,7 +6,30 @@
         xmlns:local="clr-namespace:WpfApp"
         mc:Ignorable="d"
         Title="StatsCurrentRace" Height="450" Width="800">
+    <Window.DataContext>
+        <local:DataContextMainWindow/>
+    </Window.DataContext>
     <Grid>
-        <Label Content="Punten van de racers:"/>
+
+
+        <ListView ItemsSource="{Binding Path=Speed}" Margin="206,0,308,0">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Astronaut" DisplayMemberBinding="{Binding Naam}"></GridViewColumn>
+                    <GridViewColumn Header="Speed" DisplayMemberBinding="{Binding Snelheid}"></GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <ListView ItemsSource="{Binding Path=Tijd}" Margin="497,0,0,0">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Astronaut" DisplayMemberBinding="{Binding Naam}"></GridViewColumn>
+                    <GridViewColumn Header="Race tijd" DisplayMemberBinding="{Binding RondeTijd}"></GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+        <Label Content="{Binding AantalParticipants}" HorizontalAlignment="Left" Margin="47,33,0,0" VerticalAlignment="Top" Height="32" Width="117"/>
+        <Label Content="Het aantal participants in de race: " HorizontalAlignment="Left" Margin="10,2,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.579,0.579"/>
     </Grid>
 </Window>

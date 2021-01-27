@@ -50,7 +50,7 @@ namespace Racebaanopdracht
             Data.NextRace();
             Initialize();
             Console.SetCursorPosition(0, 1);
-            Console.WriteLine($"De Astronaut met de meeste punten is: {Data.competition.gegevens.ListCheck()}");
+            Console.WriteLine($"De Astronaut met de meeste punten is: {Data.competition.gegevensPunten.ListCheck()}");
             Data.CurrentRace.Start();
         }
 

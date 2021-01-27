@@ -10,7 +10,15 @@
         <local:DataContextMainWindow/>
     </Window.DataContext>
     <Grid>
-        <Label Name="StartTime" Content="{Binding Participant.Name}" HorizontalAlignment="Left" Margin="135,123,0,0" VerticalAlignment="Top"/>
-        <Label Name="Points" Content="{Binding Points}" HorizontalAlignment="Left" Margin="135,96,0,0" VerticalAlignment="Top"/>
+        <Label Name="Ja" Content="Het aantal nog te tracks in deze competition:" HorizontalAlignment="Left" Margin="18,70,0,0" VerticalAlignment="Top"  Height="33" Width="250"/>
+        <Label Name="Tracks" Content="{Binding TracksInRace}" HorizontalAlignment="Left" Margin="27,108,0,0" VerticalAlignment="Top" Height="59" Width="90"/>
+        <ListView ItemsSource="{Binding Path=Punten}" Margin="288,0,345,0">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Astronaut" DisplayMemberBinding="{Binding Naam}"></GridViewColumn>
+                    <GridViewColumn Header="Punten" DisplayMemberBinding="{Binding PuntenDeelnemer}"></GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
     </Grid>
 </Window>

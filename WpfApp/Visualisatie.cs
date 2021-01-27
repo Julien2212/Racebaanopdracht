@@ -67,9 +67,9 @@ namespace WpfApp
         public static BitmapSource DrawTrack(Track t)
         {
             string richting = "East";
-            X = 256;
+            X = 1024;
             Y = 0;
-            bitmap = new Bitmap(9 * 256, 9 * 256);
+            bitmap = new Bitmap(16 * 256, 9 * 256);
             g = Graphics.FromImage(bitmap);
             foreach (Section s in t.Sections)
             {
@@ -252,20 +252,7 @@ namespace WpfApp
             return MakeAfbeelding.CreateBitmapSourceFromGdiBitmap(bitmap);
             
         }
-        public static void Initialize()
-        {
-            Controller.Data.CurrentRace.OnRaceFinishedHandler += OnRaceFinished;
-           
-        }
-       
-        public static void OnRaceFinished(object sender, DriversChangedEventArgs e)
-        {
-            g.Dispose();
-            MakeAfbeelding.Clear();
-            Controller.Data.NextRace();
-            Initialize();
-            Controller.Data.CurrentRace.Start();
-        }
+
         public static void DrawPeople(Graphics g, iParticipant left, iParticipant right, int x, int y, string r)
         {
             

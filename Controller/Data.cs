@@ -26,10 +26,10 @@ namespace Controller
         {
             Participants = new List<iParticipant>()
             {
-                new Astronaut("Yuri Gagarin", new Raket(), iParticipant.TeamColors.Blue),
-                new Astronaut("Neil Armstrong", new Raket(), iParticipant.TeamColors.Red),
-                new Astronaut("Andre Kuipers", new Raket(), iParticipant.TeamColors.Yellow),
-                new Astronaut("Julian van Rijckevorsel", new Raket(), iParticipant.TeamColors.Green)
+                new Astronaut("Yuri Gagarin", new Raket(), iParticipant.TeamColors.Blue,0),
+                new Astronaut("Neil Armstrong", new Raket(), iParticipant.TeamColors.Red,0),
+                new Astronaut("Andre Kuipers", new Raket(), iParticipant.TeamColors.Yellow,0),
+                new Astronaut("Julian van Rijckevorsel", new Raket(), iParticipant.TeamColors.Green,0)
 
             };
             competition.Participants = Participants;
@@ -37,7 +37,7 @@ namespace Controller
 
         static void addTracks()
         {
-            SectionTypes[] zeewolde = new SectionTypes[]
+            SectionTypes[] middel = new SectionTypes[]
             {
                 SectionTypes.StartGrid, SectionTypes.StartGrid,SectionTypes.StartGrid, SectionTypes.Finish, SectionTypes.RightCorner, SectionTypes.Straight,
                 SectionTypes.LeftCorner, SectionTypes.Straight, SectionTypes.Straight, SectionTypes.RightCorner,
@@ -47,18 +47,90 @@ namespace Controller
                 SectionTypes.Straight, SectionTypes.Straight, SectionTypes.Straight, SectionTypes.RightCorner,
 
             };
-            SectionTypes[] track2 = new SectionTypes[]
+            SectionTypes[] klein = new SectionTypes[]
             {
-               SectionTypes.StartGrid, SectionTypes.StartGrid,SectionTypes.StartGrid, SectionTypes.Finish, SectionTypes.RightCorner, SectionTypes.Straight,
-                SectionTypes.LeftCorner, SectionTypes.Straight, SectionTypes.Straight, SectionTypes.RightCorner,
-                SectionTypes.RightCorner, SectionTypes.Straight, SectionTypes.Straight, SectionTypes.LeftCorner,
-                SectionTypes.RightCorner, SectionTypes.Straight, SectionTypes.LeftCorner, SectionTypes.RightCorner,
-                SectionTypes.RightCorner, SectionTypes.LeftCorner, SectionTypes.Straight, SectionTypes.RightCorner,
-                SectionTypes.Straight, SectionTypes.Straight, SectionTypes.Straight, SectionTypes.RightCorner,
+              
+                SectionTypes.StartGrid, SectionTypes.StartGrid, SectionTypes.Finish, SectionTypes.RightCorner, SectionTypes.Straight, SectionTypes.RightCorner, SectionTypes.Straight, SectionTypes.Straight, SectionTypes.Straight, SectionTypes.RightCorner, SectionTypes.Straight, SectionTypes.RightCorner
+            };
+            
+            SectionTypes[] groot = new SectionTypes[]
+            {
+                SectionTypes.StartGrid,
+                SectionTypes.StartGrid,
+                SectionTypes.Finish,
+                SectionTypes.Straight,
+                SectionTypes.Straight,
+                SectionTypes.Straight,
+                SectionTypes.Straight,
+                SectionTypes.Straight,
+                SectionTypes.Straight,
+                SectionTypes.Straight,
+                SectionTypes.Straight,
+                SectionTypes.RightCorner,
+                SectionTypes.Straight,
+                SectionTypes.Straight,
+                SectionTypes.Straight,
+                SectionTypes.RightCorner,
+                SectionTypes.Straight,
+                SectionTypes.RightCorner,
+                SectionTypes.Straight,
+                SectionTypes.LeftCorner,
+                SectionTypes.Straight,
+                SectionTypes.Straight,
+                SectionTypes.Straight,
+                SectionTypes.Straight,
+                SectionTypes.LeftCorner,
+                SectionTypes.LeftCorner,
+                SectionTypes.Straight,
+                SectionTypes.Straight,
+                SectionTypes.Straight,
+                SectionTypes.RightCorner,
+                SectionTypes.Straight,
+                SectionTypes.RightCorner,
+                SectionTypes.Straight,
+                SectionTypes.Straight,
+                SectionTypes.LeftCorner,
+                SectionTypes.Straight,
+                SectionTypes.Straight,
+                SectionTypes.RightCorner,
+                SectionTypes.Straight,
+                SectionTypes.Straight,
+                SectionTypes.RightCorner,
+                SectionTypes.Straight,
+                SectionTypes.Straight,
+                SectionTypes.Straight,
+                SectionTypes.LeftCorner,
+                SectionTypes.Straight,
+                SectionTypes.Straight,
+                SectionTypes.Straight,
+                SectionTypes.LeftCorner,
+                SectionTypes.Straight,
+                SectionTypes.LeftCorner,
+                SectionTypes.Straight,
+                SectionTypes.RightCorner,
+                SectionTypes.Straight,
+                SectionTypes.RightCorner,
+                SectionTypes.Straight,
+                SectionTypes.Straight,
+                SectionTypes.Straight,
+                SectionTypes.RightCorner,
+                SectionTypes.Straight,
+                SectionTypes.Straight,
+                SectionTypes.Straight,
+                SectionTypes.Straight,
+                SectionTypes.Straight,
+                SectionTypes.Straight,
+                SectionTypes.Straight,
+                SectionTypes.RightCorner,
+                SectionTypes.Straight,
+                SectionTypes.Straight,
+                SectionTypes.Straight,
             };
             competition.Tracks = new Queue<Track>();
-            competition.Tracks.Enqueue(new Track("Track1", zeewolde));
-            competition.Tracks.Enqueue(new Track("Track2", track2));
+            competition.Tracks.Enqueue(new Track("Track1", klein));
+            competition.Tracks.Enqueue(new Track("Track2", middel));
+            competition.Tracks.Enqueue(new Track("Track3", groot));
+
         }
 
         public static void NextRace()

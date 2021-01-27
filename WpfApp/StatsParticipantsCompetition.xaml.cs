@@ -20,8 +20,6 @@ namespace WpfApp
         public StatsParticipantsCompetition()
         {
             InitializeComponent();
-            StartTime.Content = $"{Controller.Data.CurrentRace.opslaanGegevensTijd}";
-            Points.Content = $"Er doen {Controller.Data.CurrentRace.Participants.Count} Astronauten mee aan deze competitie";
         }
     }
 }

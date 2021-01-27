@@ -11,8 +11,10 @@ namespace Model
         public List<iParticipant> Participants { get; set; }
         public Queue<Track> Tracks { get; set; }
 
-        public GenericGegevens<Punten> gegevens = new GenericGegevens<Punten>();
-
+        public GenericGegevens<Punten> gegevensPunten = new GenericGegevens<Punten>();
+        public GenericGegevens<Speed> gegevensSpeed = new GenericGegevens<Speed>();
+        public GenericGegevens<Tijd> gegevensTijd = new GenericGegevens<Tijd>();
+        public GenericGegevens<Kapot> gegevensKapot = new GenericGegevens<Kapot>();
 
         public Competition()
         {
@@ -33,41 +35,40 @@ namespace Model
                 return volgende;
             }
         }
-        public void BepaalEindstand(Queue<iParticipant> queue)
+        public void OpslaanPunten(Queue<iParticipant> queue)
         {
             if (queue.Count == 4)
             {
                 Punten p = new Punten();
-                p.Naam = queue.Dequeue().Name;
+                p.Naam = queue.Peek().Name;
                 p.PuntenDeelnemer = 10;
-                gegevens.FillList(p);
+                gegevensPunten.FillList(p);
                 queue.Dequeue();
             }
             if (queue.Count == 3)
             {
                 Punten p = new Punten();
-                p.Naam = queue.Dequeue().Name;
+                p.Naam = queue.Peek().Name;
                 p.PuntenDeelnemer = 7;
-                gegevens.FillList(p);
+                gegevensPunten.FillList(p);
                 queue.Dequeue();
             }
             if (queue.Count == 2)
             {
                 Punten p = new Punten();
-                p.Naam = queue.Dequeue().Name;
+                p.Naam = queue.Peek().Name;
                 p.PuntenDeelnemer = 5;
-                gegevens.FillList(p);
+                gegevensPunten.FillList(p);
                 queue.Dequeue();
             }
             if (queue.Count == 1)
             {
                 Punten p = new Punten();
-                p.Naam = queue.Dequeue().Name;
+                p.Naam = queue.Peek().Name;
                 p.PuntenDeelnemer = 3;
-                gegevens.FillList(p);
+                gegevensPunten.FillList(p);
                 queue.Dequeue();
             }
-
         }
     }
 }

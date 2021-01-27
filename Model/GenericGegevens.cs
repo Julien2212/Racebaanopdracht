@@ -23,5 +23,10 @@ namespace Model
                 return _list[0].BesteDeelnemer(_list);
             }
         }
+
+        public List<iHelikopterview> GetData()
+        {
+            return _list;
+        }
     }
 }

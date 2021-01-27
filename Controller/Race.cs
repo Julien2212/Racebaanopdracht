@@ -32,6 +32,7 @@ namespace Controller
         public GenericGegevens<Tijd> opslaanGegevensTijd = new GenericGegevens<Tijd>();
         public GenericGegevens<Kapot> opslaanGegevensKapot = new GenericGegevens<Kapot>();
         public GenericGegevens<Speed> opslaanGegevensSpeed = new GenericGegevens<Speed>();
+        public GenericGegevens<Punten> opslaanGegevensPunten = new GenericGegevens<Punten>();
 
         public Race(Track t, List<iParticipant> participants)
         {
@@ -88,6 +89,7 @@ namespace Controller
                 if (SectData.Left != null && !SectData.Left.Equipment.IsBroken) // als er iemand  op links staat
                 {
                     BreakTheRocket(SectData.Left, iterator.Value);
+                    OpslaanKapot(SectData.Left, iterator.Value);
                     OpslaanSnelheid(SectData.Left, iterator.Value);
                     int leftperformance = SectData.Left.Equipment.Performance * SectData.Left.Equipment.Speed; // bepaal de performance voor diegene
                     SectData.DistanceLeft += leftperformance; // tel deze bij distanceleft op
@@ -163,10 +165,12 @@ namespace Controller
                 else if (SectData.Left != null)
                 {
                     BreakTheRocket(SectData.Left, iterator.Value);
+                    OpslaanKapot(SectData.Left, iterator.Value);
                 }
                 if (SectData.Right != null && !SectData.Right.Equipment.IsBroken) // als er iemand  op rechts staat
                 {
                     BreakTheRocket(SectData.Right, iterator.Value);
+                    OpslaanKapot(SectData.Right, iterator.Value);
                     OpslaanSnelheid(SectData.Right, iterator.Value);
                     int rightperformance = SectData.Right.Equipment.Performance * SectData.Right.Equipment.Speed; // bepaal de performance voor diegene
                     SectData.DistanceRight += rightperformance; // tel deze bij distanceleft op
@@ -238,6 +242,7 @@ namespace Controller
                 else if (SectData.Right != null)
                 {
                     BreakTheRocket(SectData.Right, iterator.Value);
+                    OpslaanKapot(SectData.Right, iterator.Value);
                 }
                 iterator = iterator.Previous; // ga 1 terug
             }
@@ -261,6 +266,7 @@ namespace Controller
             Kapot kapot = new Kapot();
             kapot.Naam = participant.Name;
             kapot.Sectie = sectie;
+            kapot.Sectie.SectionType = sectie.SectionType;
             opslaanGegevensKapot.FillList(kapot);
         }
 
@@ -272,10 +278,11 @@ namespace Controller
             speed.Snelheid = participant.Equipment.Speed;
             opslaanGegevensSpeed.FillList(speed);
         }
+       
 
         public void RaceFinished()
         {
-            Data.competition.BepaalEindstand(EindstandQueue);
+            Data.competition.OpslaanPunten(EindstandQueue);
             OnRaceFinishedHandler?.Invoke(this, new DriversChangedEventArgs() { track = Track });
             CleanUp();
         }

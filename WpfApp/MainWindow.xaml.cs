@@ -24,14 +24,21 @@ namespace WpfApp
     /// </summary>
     public partial class MainWindow : Window
     {
+        public void Initialize()
+        {
+            Data.CurrentRace.DriversChanged += OnDriversChanged;
+            Data.CurrentRace.OnRaceFinishedHandler += OnRaceFinished;
+
+        }
         public MainWindow()
         {
+
             Data.Initialize();
             Data.NextRace();
-            DataContext = new DataContextMainWindow();
-            Visualisatie.Initialize();
-            Controller.Data.CurrentRace.DriversChanged += OnDriversChanged;
             InitializeComponent();
+            DataContext = new DataContextMainWindow();
+            Initialize();
+
         }
         public void OnDriversChanged(object sender, EventArgs e)
         {
@@ -42,6 +49,12 @@ namespace WpfApp
         this.Achtergrond.Source = null;
         this.Achtergrond.Source = Visualisatie.DrawTrack(Data.CurrentRace.Track);
     }));
+        }
+        public void OnRaceFinished(object sender, DriversChangedEventArgs e)
+        {
+            Data.NextRace();
+            Initialize();
+            Data.CurrentRace.Start();
         }
 
         private void MenuItem_Exit_Click(object sender, RoutedEventArgs e)
