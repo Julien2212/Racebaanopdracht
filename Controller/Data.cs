@@ -26,10 +26,10 @@ namespace Controller
         {
             Participants = new List<iParticipant>()
             {
-                new Astronaut("Yuri Gagarin", new Raket()),
-                new Astronaut("Neil Armstrong", new Raket()),
-                new Astronaut("Andre Kuipers", new Raket()),
-                new Astronaut("Julian van Rijckevorsel", new Raket())
+                new Astronaut("Yuri Gagarin", new Raket(), iParticipant.TeamColors.Blue),
+                new Astronaut("Neil Armstrong", new Raket(), iParticipant.TeamColors.Red),
+                new Astronaut("Andre Kuipers", new Raket(), iParticipant.TeamColors.Yellow),
+                new Astronaut("Julian van Rijckevorsel", new Raket(), iParticipant.TeamColors.Green)
 
             };
             competition.Participants = Participants;

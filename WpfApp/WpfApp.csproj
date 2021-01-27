@@ -29,7 +29,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="DocumentFormat.OpenXml" Version="2.12.1" />
     <PackageReference Include="System.Drawing.Common" Version="5.0.0" />
+    <PackageReference Include="System.ObjectModel" Version="4.3.0" />
   </ItemGroup>
 
   <ItemGroup>

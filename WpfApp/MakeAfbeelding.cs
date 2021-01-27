@@ -10,11 +10,10 @@ namespace WpfApp
 {
     public static class MakeAfbeelding
     {
-        
 
         private static Dictionary<string, Bitmap> dict = new Dictionary<string, Bitmap>();
 
-        public static Bitmap AddDict(string s)
+        public static Bitmap GetDict(string s)
         {
             if (!dict.ContainsKey(s))
             {
@@ -28,7 +27,8 @@ namespace WpfApp
         {
             dict.Clear();
         }
-        public static Bitmap Leeg(int i, int j)
+
+        public static Bitmap Achtergrond(int i, int j)
         {
             if (dict.ContainsKey("empty"))
             {
@@ -38,10 +38,9 @@ namespace WpfApp
             {
                 Bitmap b = new Bitmap(i, j);
                 Graphics g = Graphics.FromImage(b);
-                g.Clear(System.Drawing.Color.Red);
+                g.Clear(System.Drawing.Color.LightGray);
                 dict.Add("empty", b);
                 return (Bitmap)dict["empty"].Clone();
-                
             }
         }
         public static BitmapSource CreateBitmapSourceFromGdiBitmap(Bitmap bitmap)

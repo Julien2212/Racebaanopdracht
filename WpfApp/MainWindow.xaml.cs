@@ -24,25 +24,41 @@ namespace WpfApp
     /// </summary>
     public partial class MainWindow : Window
     {
-        public event EventHandler<Model.DriversChangedEventArgs> handler;
         public MainWindow()
         {
-            InitializeComponent();
             Data.Initialize();
             Data.NextRace();
-            //Visualisatie1.Initialize();
-            Data.CurrentRace.DriversChanged += OnDriversChanged;
+            DataContext = new DataContextMainWindow();
+            Visualisatie.Initialize();
+            Controller.Data.CurrentRace.DriversChanged += OnDriversChanged;
+            InitializeComponent();
         }
         public void OnDriversChanged(object sender, EventArgs e)
         {
-            //handler?.Invoke(this, new Model.DriversChangedEventArgs() { track = Data.CurrentRace.Track });
             this.Achtergrond.Dispatcher.BeginInvoke(
-    DispatcherPriority.Render,
-    new Action(() =>
+            DispatcherPriority.Render,
+            new Action(() =>
     {
         this.Achtergrond.Source = null;
         this.Achtergrond.Source = Visualisatie.DrawTrack(Data.CurrentRace.Track);
     }));
+        }
+
+        private void MenuItem_Exit_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
+        private StatsParticipantsCompetition statscompetition;
+        private void MenuItem_CompStats_Click(object sender, RoutedEventArgs e)
+        {
+            statscompetition = new StatsParticipantsCompetition();
+            statscompetition.Show();
+        }
+        private StatsCurrentRace statscurrentrace;
+        private void MenuItem_RaceStats_Click(object sender, RoutedEventArgs e)
+        {
+            statscurrentrace = new StatsCurrentRace();
+            statscurrentrace.Show();
         }
     }
 }

@@ -317,7 +317,6 @@ namespace Controller
                 {
                     participants.Equipment.IsBroken = false;
                 }
-                //participants.Equipment.IsBroken = random == 1? true : false;
                
                 if (participants.Equipment.IsBroken)
                 {
