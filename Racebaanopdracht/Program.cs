@@ -1,12 +1,25 @@
 ﻿using System;
+using System.Threading;
+using Controller;
+using Model;
 
 namespace Racebaanopdracht
+
 {
-    class Program
+    public class Program
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Data.Initialize();
+            Data.NextRace();
+
+            Visualisatie1.Initialize();
+           
+
+            for (; ; )
+            {
+                Thread.Sleep(100);
+            }
         }
     }
 }

@@ -1,0 +1,151 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Afbeeldingen\blueEast.png" />
+    <None Remove="Afbeeldingen\blueNorth.png" />
+    <None Remove="Afbeeldingen\blueSouth.png" />
+    <None Remove="Afbeeldingen\blueWest.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Afbeeldingen\blueEast.png">
+      <CopyToOutputDirectory>Content</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Afbeeldingen\blueNorth.png">
+      <CopyToOutputDirectory>Content</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Afbeeldingen\blueSouth.png">
+      <CopyToOutputDirectory>Content</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Afbeeldingen\blueWest.png">
+      <CopyToOutputDirectory>Content</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DocumentFormat.OpenXml" Version="2.12.1" />
+    <PackageReference Include="System.Drawing.Common" Version="5.0.0" />
+    <PackageReference Include="System.ObjectModel" Version="4.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Controller\Controller.csproj" />
+    <ProjectReference Include="..\Model\Model.csproj" />
+    <ProjectReference Include="..\Racebaanopdracht\Racebaanopdracht.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Afbeeldingen\blueKapot.png">
+      <CopyToOutputDirectory>Content</CopyToOutputDirectory>
+    </None>
+    <None Update="Afbeeldingen\eastLeft.png">
+      <CopyToOutputDirectory>Content</CopyToOutputDirectory>
+    </None>
+    <None Update="Afbeeldingen\eastRight.png">
+      <CopyToOutputDirectory>Content</CopyToOutputDirectory>
+    </None>
+    <None Update="Afbeeldingen\finishHorizontal.png">
+      <CopyToOutputDirectory>Content</CopyToOutputDirectory>
+    </None>
+    <None Update="Afbeeldingen\finishVertical.png">
+      <CopyToOutputDirectory>Content</CopyToOutputDirectory>
+    </None>
+    <None Update="Afbeeldingen\greenEast.png">
+      <CopyToOutputDirectory>Content</CopyToOutputDirectory>
+    </None>
+    <None Update="Afbeeldingen\greenKapot.png">
+      <CopyToOutputDirectory>Content</CopyToOutputDirectory>
+    </None>
+    <None Update="Afbeeldingen\greenNorth.png">
+      <CopyToOutputDirectory>Content</CopyToOutputDirectory>
+    </None>
+    <None Update="Afbeeldingen\greenSouth.png">
+      <CopyToOutputDirectory>Content</CopyToOutputDirectory>
+    </None>
+    <None Update="Afbeeldingen\greenWest.png">
+      <CopyToOutputDirectory>Content</CopyToOutputDirectory>
+    </None>
+    <None Update="Afbeeldingen\greyEast.png">
+      <CopyToOutputDirectory>Content</CopyToOutputDirectory>
+    </None>
+    <None Update="Afbeeldingen\greyKapot.png">
+      <CopyToOutputDirectory>Content</CopyToOutputDirectory>
+    </None>
+    <None Update="Afbeeldingen\greyNorth.png">
+      <CopyToOutputDirectory>Content</CopyToOutputDirectory>
+    </None>
+    <None Update="Afbeeldingen\greySouth.png">
+      <CopyToOutputDirectory>Content</CopyToOutputDirectory>
+    </None>
+    <None Update="Afbeeldingen\greyWest.png">
+      <CopyToOutputDirectory>Content</CopyToOutputDirectory>
+    </None>
+    <None Update="Afbeeldingen\northLeft.png">
+      <CopyToOutputDirectory>Content</CopyToOutputDirectory>
+    </None>
+    <None Update="Afbeeldingen\northRight.png">
+      <CopyToOutputDirectory>Content</CopyToOutputDirectory>
+    </None>
+    <None Update="Afbeeldingen\redEast.png">
+      <CopyToOutputDirectory>Content</CopyToOutputDirectory>
+    </None>
+    <None Update="Afbeeldingen\redKapot.png">
+      <CopyToOutputDirectory>Content</CopyToOutputDirectory>
+    </None>
+    <None Update="Afbeeldingen\redNorth.png">
+      <CopyToOutputDirectory>Content</CopyToOutputDirectory>
+    </None>
+    <None Update="Afbeeldingen\redSouth.png">
+      <CopyToOutputDirectory>Content</CopyToOutputDirectory>
+    </None>
+    <None Update="Afbeeldingen\redWest.png">
+      <CopyToOutputDirectory>Content</CopyToOutputDirectory>
+    </None>
+    <None Update="Afbeeldingen\southLeft.png">
+      <CopyToOutputDirectory>Content</CopyToOutputDirectory>
+    </None>
+    <None Update="Afbeeldingen\southRight.png">
+      <CopyToOutputDirectory>Content</CopyToOutputDirectory>
+    </None>
+    <None Update="Afbeeldingen\startGridHorizontal.png">
+      <CopyToOutputDirectory>Content</CopyToOutputDirectory>
+    </None>
+    <None Update="Afbeeldingen\startGridVertical.png">
+      <CopyToOutputDirectory>Content</CopyToOutputDirectory>
+    </None>
+    <None Update="Afbeeldingen\trackHorizontal.png">
+      <CopyToOutputDirectory>Content</CopyToOutputDirectory>
+    </None>
+    <None Update="Afbeeldingen\trackVertical.png">
+      <CopyToOutputDirectory>Content</CopyToOutputDirectory>
+    </None>
+    <None Update="Afbeeldingen\westLeft.png">
+      <CopyToOutputDirectory>Content</CopyToOutputDirectory>
+    </None>
+    <None Update="Afbeeldingen\westRight.png">
+      <CopyToOutputDirectory>Content</CopyToOutputDirectory>
+    </None>
+    <None Update="Afbeeldingen\yellowEast.png">
+      <CopyToOutputDirectory>Content</CopyToOutputDirectory>
+    </None>
+    <None Update="Afbeeldingen\yellowKapot.png">
+      <CopyToOutputDirectory>Content</CopyToOutputDirectory>
+    </None>
+    <None Update="Afbeeldingen\yellowNorth.png">
+      <CopyToOutputDirectory>Content</CopyToOutputDirectory>
+    </None>
+    <None Update="Afbeeldingen\yellowSouth.png">
+      <CopyToOutputDirectory>Content</CopyToOutputDirectory>
+    </None>
+    <None Update="Afbeeldingen\yellowWest.png">
+      <CopyToOutputDirectory>Content</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
